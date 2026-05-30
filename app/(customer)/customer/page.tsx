@@ -193,14 +193,11 @@ export default async function CustomerPage({ searchParams }: CustomerPageProps) 
       <div className="customer-topbar">
         <div className="customer-brand">
           <span className="brand-mark" aria-hidden="true" />
-          <span>SHUTTLEFLOW</span>
+          <span>WAYLO</span>
         </div>
       </div>
 
-      <section className="customer-hero" aria-labelledby="customer-search-title">
-        <h1 id="customer-search-title">Travel smarter between airports, ports &amp; cities</h1>
-        <p>Fixed prices. Shared rides. No surprises.</p>
-      </section>
+      <section className="customer-hero customer-hero-with-visual" aria-labelledby="customer-search-title"><div className="customer-hero-copy"><h1 id="customer-search-title">Fixed-price shuttles between airports, ports &amp; city hubs</h1><p>Scheduled shared rides. Verified operators. No surge pricing.</p></div><div className="shuttle-visual" aria-hidden="true"><div className="shuttle-skyline"><span></span><span></span><span></span></div><div className="shuttle-road"></div><div className="shuttle-bus"><div className="shuttle-window"></div><div className="shuttle-window small"></div><div className="shuttle-door"></div><span className="wheel left"></span><span className="wheel right"></span></div><div className="hub-label">Airport ? City hub</div></div></section>
 
       <section className="search-card" aria-label="Search fixed shuttle departures">
         <CustomerSearchForm
@@ -229,7 +226,7 @@ export default async function CustomerPage({ searchParams }: CustomerPageProps) 
             passengerCount,
           }}
         />
-        <div className="trust-badges" aria-label="ShuttleFlow travel commitments">
+        <div className="trust-badges" aria-label="WAYLO travel commitments">
           <span><b aria-hidden="true">{"\u2713"}</b> Guaranteed seat</span>
           <span><b aria-hidden="true">{"\u2713"}</b> Up to 2 bags included</span>
           <span><b aria-hidden="true">{"\u2713"}</b> No surge pricing</span>
@@ -311,3 +308,4 @@ export default async function CustomerPage({ searchParams }: CustomerPageProps) 
     </main>
   );
 }
+

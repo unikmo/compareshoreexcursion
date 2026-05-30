@@ -3,11 +3,10 @@ import Link from "next/link";
 export default function HomePage() {
   return (
     <main className="foundation-panel">
-      <p className="eyebrow">ShuttleFlow foundation</p>
-      <h1>Role-based MVP shell</h1>
+      <p className="eyebrow">WAYLO foundation</p>
+      <h1>Fixed-price shuttle marketplace</h1>
       <p>
-        The app is now structured around Customer, Operator, and Admin areas with Prisma, local SQLite configuration,
-        and Supabase Auth placeholders ready for integration.
+        Waylo connects passengers with verified shuttle operators on scheduled hub-to-hub routes between airports, ports, city hubs, and event locations.
       </p>
       <div className="foundation-links" aria-label="Role areas">
         <Link href="/customer">Customer</Link>
@@ -17,3 +16,4 @@ export default function HomePage() {
     </main>
   );
 }
+

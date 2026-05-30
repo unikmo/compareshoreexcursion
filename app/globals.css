@@ -2511,3 +2511,281 @@ body {
 .payment-card .checkout-brand {
   color: var(--accent-dark);
 }
+
+/* Waylo visual cleanup overrides */
+:root {
+  --ink: #0f172a;
+  --muted: #334155;
+  --line: #cbd5e1;
+  --panel: #ffffff;
+  --page: #ecfeff;
+  --accent: #0faaa0;
+  --accent-dark: #0f766e;
+  --soft: #f8fafc;
+  --shadow: 0 18px 42px rgba(15, 23, 42, 0.12);
+}
+
+body {
+  color: #0f172a;
+  background:
+    radial-gradient(circle at top center, rgba(255, 255, 255, 0.22), transparent 42%),
+    linear-gradient(180deg, #129f96 0%, #0f8f87 40%, #eefafa 100%);
+}
+
+.customer-brand,
+.checkout-brand {
+  color: #0f766e;
+}
+
+.customer-hero p,
+.checkout-header p:last-child,
+.payment-header p,
+.confirmation-summary,
+.confirmation-copy,
+.trip-itinerary strong,
+.payment-summary,
+.ticket-note,
+.trust-badges,
+.departure-card p,
+.departure-meta-row,
+.departure-meta-row .meta-label,
+.departure-price small,
+.checkout-section label,
+.checkout-field-grid.additional-passengers label,
+.summary-details span,
+.summary-total span,
+.checkout-security,
+.manage-booking-summary,
+.booking-policy-popover,
+.stack-form label,
+.money-grid span {
+  color: #334155 !important;
+}
+
+.customer-home h1,
+.checkout-header h1,
+.payment-header h1,
+.confirmation-card h1,
+.trip-card h1,
+.ticket-card h1,
+.departure-route,
+.departure-results h2,
+.checkout-section h2,
+.booking-summary-card h2,
+.summary-details strong,
+.summary-total strong,
+.search-debug-panel strong {
+  color: #0f172a !important;
+}
+
+.search-card,
+.checkout-form-card,
+.checkout-unavailable-card,
+.payment-card,
+.confirmation-card,
+.trip-card,
+.ticket-card,
+.customer-panel,
+.operator-panel,
+.foundation-panel,
+.list-row,
+.operator-booking {
+  border-color: #cbd5e1 !important;
+  background: #ffffff !important;
+  box-shadow: 0 16px 36px rgba(15, 23, 42, 0.10) !important;
+}
+
+.search-hierarchy input,
+.search-hierarchy select,
+.date-control,
+.checkout-section input,
+.checkout-section select,
+.checkout-section textarea,
+.checkout-field-grid label select,
+.checkout-field-grid label input,
+.inline-form input,
+.inline-form select,
+.stack-form input,
+.stack-form select,
+.stack-form textarea,
+.message-form select {
+  border-color: #cbd5e1 !important;
+  background: #ffffff !important;
+  color: #0f172a !important;
+}
+
+.search-hierarchy input:hover:not(:disabled),
+.search-hierarchy select:hover:not(:disabled),
+.date-control:hover,
+.checkout-section input:hover:not(:disabled),
+.checkout-section select:hover:not(:disabled),
+.checkout-section textarea:hover:not(:disabled) {
+  border-color: #94a3b8 !important;
+  background: #ffffff !important;
+}
+
+.search-hierarchy input:focus,
+.search-hierarchy select:focus,
+.date-control:focus-within,
+.checkout-section input:focus,
+.checkout-section select:focus,
+.checkout-section textarea:focus {
+  outline: 2px solid rgba(15, 170, 160, 0.18) !important;
+  border-color: #0faaa0 !important;
+}
+
+.search-hierarchy input:disabled,
+.search-hierarchy select:disabled {
+  background: #f1f5f9 !important;
+  color: #64748b !important;
+}
+
+.customer-hero-with-visual {
+  width: min(900px, 100%);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 280px;
+  gap: 28px;
+  align-items: center;
+  text-align: left;
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+
+.customer-hero-copy {
+  text-align: left;
+}
+
+.customer-hero-copy h1 {
+  margin-bottom: 8px;
+}
+
+.customer-hero-copy p {
+  color: #334155 !important;
+  font-size: 1rem;
+}
+
+.shuttle-visual {
+  position: relative;
+  min-height: 170px;
+  border: 1px solid rgba(203, 213, 225, 0.75);
+  border-radius: 22px;
+  overflow: hidden;
+  background:
+    linear-gradient(180deg, #e0fdfa 0%, #ffffff 62%),
+    #ffffff;
+  box-shadow: 0 18px 38px rgba(15, 23, 42, 0.14);
+}
+
+.shuttle-skyline {
+  position: absolute;
+  left: 22px;
+  right: 22px;
+  bottom: 66px;
+  display: flex;
+  gap: 8px;
+  align-items: flex-end;
+  opacity: 0.45;
+}
+
+.shuttle-skyline span {
+  width: 34px;
+  border-radius: 8px 8px 0 0;
+  background: #99f6e4;
+}
+
+.shuttle-skyline span:nth-child(1) { height: 42px; }
+.shuttle-skyline span:nth-child(2) { height: 66px; }
+.shuttle-skyline span:nth-child(3) { height: 50px; }
+
+.shuttle-road {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 34px;
+  height: 26px;
+  background: #0f172a;
+}
+
+.shuttle-road::after {
+  content: "";
+  position: absolute;
+  left: 18px;
+  right: 18px;
+  top: 12px;
+  height: 2px;
+  background: repeating-linear-gradient(90deg, #ffffff 0 18px, transparent 18px 34px);
+  opacity: 0.8;
+}
+
+.shuttle-bus {
+  position: absolute;
+  left: 42px;
+  right: 34px;
+  bottom: 52px;
+  height: 58px;
+  border-radius: 16px 20px 12px 12px;
+  background: linear-gradient(135deg, #0faaa0, #14b8a6);
+  box-shadow: 0 12px 24px rgba(15, 118, 110, 0.25);
+}
+
+.shuttle-window {
+  position: absolute;
+  left: 18px;
+  top: 12px;
+  width: 82px;
+  height: 20px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.82);
+}
+
+.shuttle-window.small {
+  left: 112px;
+  width: 42px;
+}
+
+.shuttle-door {
+  position: absolute;
+  right: 22px;
+  top: 12px;
+  width: 28px;
+  height: 38px;
+  border-radius: 8px 8px 4px 4px;
+  background: rgba(255, 255, 255, 0.32);
+}
+
+.wheel {
+  position: absolute;
+  bottom: -9px;
+  width: 18px;
+  height: 18px;
+  border: 4px solid #0f172a;
+  border-radius: 999px;
+  background: #ffffff;
+}
+
+.wheel.left { left: 28px; }
+.wheel.right { right: 34px; }
+
+.hub-label {
+  position: absolute;
+  left: 18px;
+  bottom: 8px;
+  color: #0f172a;
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+@media (max-width: 760px) {
+  .customer-hero-with-visual {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .customer-hero-copy {
+    text-align: center;
+  }
+
+  .shuttle-visual {
+    min-height: 140px;
+  }
+}
