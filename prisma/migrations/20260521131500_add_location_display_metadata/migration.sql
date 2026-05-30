@@ -1,0 +1,3 @@
+-- This pre-init migration is intentionally empty.
+-- The init migration creates the current SQLite schema with location display
+-- metadata and route transfer estimates already included.

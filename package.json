@@ -1,0 +1,39 @@
+{
+  "name": "shuttleflow",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate dev",
+    "prisma:seed": "prisma db seed"
+  },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.22.0",
+    "@stripe/react-stripe-js": "^3.10.0",
+    "@stripe/stripe-js": "^5.10.0",
+    "@supabase/ssr": "^0.5.2",
+    "@supabase/supabase-js": "^2.46.1",
+    "next": "^15.0.3",
+    "prisma": "^5.22.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "resend": "^4.8.0",
+    "stripe": "^17.7.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.9.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "eslint": "^9.14.0",
+    "eslint-config-next": "^15.0.3",
+    "tsx": "^4.19.2",
+    "typescript": "^5.6.3"
+  }
+}

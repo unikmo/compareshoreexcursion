@@ -1,0 +1,501 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Country {
+  id        String   @id @default(uuid())
+  name      String
+  code      String   @unique
+  regions   Region[]
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("countries")
+}
+
+model Region {
+  id        String   @id @default(uuid())
+  countryId String   @map("country_id")
+  name      String
+  code      String
+  country   Country  @relation(fields: [countryId], references: [id], onDelete: Cascade)
+  cities    City[]
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@unique([countryId, code])
+  @@map("regions")
+}
+
+model City {
+  id        String     @id @default(uuid())
+  regionId  String     @map("region_id")
+  name      String
+  region    Region     @relation(fields: [regionId], references: [id], onDelete: Cascade)
+  locations Location[]
+  events    Event[]
+  createdAt DateTime   @default(now()) @map("created_at")
+  updatedAt DateTime   @updatedAt @map("updated_at")
+
+  @@unique([regionId, name])
+  @@map("cities")
+}
+
+model Location {
+  id              String  @id @default(uuid())
+  cityId          String  @map("city_id")
+  name            String
+  displayName     String  @map("display_name")
+  locationType    String  @default("CITY") @map("location_type")
+  shortCode       String? @map("short_code")
+  type            String
+  address         String?
+  bookingEnabled  Boolean @default(true) @map("booking_enabled")
+  originRoutes    Route[] @relation("RouteOrigin")
+  destinationRoutes Route[] @relation("RouteDestination")
+  events          Event[]
+  cruiseSchedules CruiseSchedule[]
+  city            City    @relation(fields: [cityId], references: [id], onDelete: Cascade)
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  @@unique([cityId, name])
+  @@map("locations")
+}
+
+model Route {
+  id                    String             @id @default(uuid())
+  originLocationId      String             @map("origin_location_id")
+  destinationLocationId String             @map("destination_location_id")
+  reverseRouteId        String?            @map("reverse_route_id")
+  name                  String
+  displayName           String             @map("display_name")
+  isBidirectional       Boolean            @default(false) @map("is_bidirectional")
+  defaultPriceCents     Int?               @map("default_price_cents")
+  adminFallbackPriceCents Int?             @map("admin_fallback_price_cents")
+  estimatedTransferMinMinutes Int?         @map("estimated_transfer_min_minutes")
+  estimatedTransferMaxMinutes Int?         @map("estimated_transfer_max_minutes")
+  estimatedRideshareLowCents Int?          @map("estimated_rideshare_low_cents")
+  estimatedRideshareHighCents Int?         @map("estimated_rideshare_high_cents")
+  active                Boolean            @default(true)
+  origin                Location           @relation("RouteOrigin", fields: [originLocationId], references: [id], onDelete: Restrict)
+  destination           Location           @relation("RouteDestination", fields: [destinationLocationId], references: [id], onDelete: Restrict)
+  operatorRoutes        OperatorRoute[]
+  pricingRules          PricingRule[]
+  departures            RouteDeparture[]
+  bookings              Booking[]
+  createdAt             DateTime           @default(now()) @map("created_at")
+  updatedAt             DateTime           @updatedAt @map("updated_at")
+
+  @@unique([originLocationId, destinationLocationId])
+  @@map("routes")
+}
+
+model RouteDeparture {
+  id           String    @id @default(uuid())
+  routeId      String    @map("route_id")
+  departureAt  DateTime  @map("departure_at")
+  seatsTotal   Int       @map("seats_total")
+  seatsBooked  Int       @default(0) @map("seats_booked")
+  active       Boolean   @default(true)
+  route        Route     @relation(fields: [routeId], references: [id], onDelete: Cascade)
+  bookings     Booking[]
+  createdAt    DateTime  @default(now()) @map("created_at")
+  updatedAt    DateTime  @updatedAt @map("updated_at")
+
+  @@index([routeId, departureAt])
+  @@map("route_departures")
+}
+
+model User {
+  id               String           @id @default(uuid())
+  supabaseAuthId   String?          @unique @map("supabase_auth_id")
+  email            String           @unique
+  fullName         String           @map("full_name")
+  role             String
+  createdAt        DateTime         @default(now()) @map("created_at")
+  updatedAt        DateTime         @updatedAt @map("updated_at")
+  customerProfile  CustomerProfile?
+  operatorProfile  OperatorProfile?
+  driverProfile    DriverProfile?
+  sentMessages     BookingMessage[] @relation("MessageSender")
+  receivedMessages BookingMessage[] @relation("MessageReceiver")
+  notifications    Notification[]
+  auditLogs         AuditLog[]
+
+  @@map("users")
+}
+
+model CustomerProfile {
+  id         String    @id @default(uuid())
+  userId     String    @unique @map("user_id")
+  phone      String?
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  bookings   Booking[]
+  createdAt  DateTime  @default(now()) @map("created_at")
+  updatedAt  DateTime  @updatedAt @map("updated_at")
+
+  @@map("customer_profiles")
+}
+
+model OperatorProfile {
+  id             String          @id @default(uuid())
+  userId         String          @unique @map("user_id")
+  companyName    String          @map("company_name")
+  status         String          @default("PENDING")
+  user           User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  routes         OperatorRoute[]
+  claims         OperatorClaim[]
+  drivers        DriverProfile[]
+  vehicles       Vehicle[]
+  bookings       Booking[]
+  documents      Document[]
+  outreachContacts OutreachContact[]
+  pricingRules   PricingRule[]
+  checkedInPassengers BookingPassenger[] @relation("PassengerCheckedInBy")
+  createdAt      DateTime        @default(now()) @map("created_at")
+  updatedAt      DateTime        @updatedAt @map("updated_at")
+
+  @@map("operator_profiles")
+}
+
+model DriverProfile {
+  id         String          @id @default(uuid())
+  userId     String          @unique @map("user_id")
+  operatorId String          @map("operator_id")
+  user       User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  operator   OperatorProfile @relation(fields: [operatorId], references: [id], onDelete: Cascade)
+  bookings   Booking[]
+  createdAt  DateTime        @default(now()) @map("created_at")
+  updatedAt  DateTime        @updatedAt @map("updated_at")
+
+  @@map("driver_profiles")
+}
+
+model Vehicle {
+  id          String          @id @default(uuid())
+  operatorId  String          @map("operator_id")
+  make        String
+  model       String
+  color       String?
+  plateNumber String          @map("plate_number")
+  capacity    Int
+  status      String          @default("ACTIVE")
+  operator    OperatorProfile @relation(fields: [operatorId], references: [id], onDelete: Cascade)
+  bookings    Booking[]
+  createdAt   DateTime        @default(now()) @map("created_at")
+  updatedAt   DateTime        @updatedAt @map("updated_at")
+
+  @@unique([operatorId, plateNumber])
+  @@map("vehicles")
+}
+
+model OperatorRoute {
+  id          String          @id @default(uuid())
+  operatorId  String          @map("operator_id")
+  routeId     String          @map("route_id")
+  enabled     Boolean         @default(true)
+  operator    OperatorProfile @relation(fields: [operatorId], references: [id], onDelete: Cascade)
+  route       Route           @relation(fields: [routeId], references: [id], onDelete: Cascade)
+  createdAt   DateTime        @default(now()) @map("created_at")
+  updatedAt   DateTime        @updatedAt @map("updated_at")
+
+  @@unique([operatorId, routeId])
+  @@map("operator_routes")
+}
+
+model PricingRule {
+  id             String   @id @default(uuid())
+  routeId        String   @map("route_id")
+  operatorId     String?  @map("operator_id")
+  fareType       String   @map("fare_type")
+  basePriceCents Int      @map("base_price_cents")
+  luggageIncluded Int     @default(1) @map("luggage_included")
+  priceSource    String   @default("ROUTE_DEFAULT") @map("price_source")
+  active         Boolean  @default(true)
+  route          Route    @relation(fields: [routeId], references: [id], onDelete: Cascade)
+  operator       OperatorProfile? @relation(fields: [operatorId], references: [id], onDelete: Cascade)
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+
+  @@unique([routeId, operatorId, fareType])
+  @@map("pricing_rules")
+}
+
+model OperatorClaim {
+  id          String          @id @default(uuid())
+  operatorId  String?         @map("operator_id")
+  companyName String          @map("company_name")
+  contactEmail String         @map("contact_email")
+  status      String          @default("PENDING")
+  operator    OperatorProfile? @relation(fields: [operatorId], references: [id], onDelete: SetNull)
+  createdAt   DateTime        @default(now()) @map("created_at")
+  updatedAt   DateTime        @updatedAt @map("updated_at")
+
+  @@map("operator_claims")
+}
+
+model Booking {
+  id                     String             @id @default(uuid())
+  customerId             String             @map("customer_id")
+  operatorId             String             @map("operator_id")
+  routeId                String             @map("route_id")
+  departureId            String             @map("departure_id")
+  assignedDriverId       String?            @map("assigned_driver_id")
+  vehicleId              String?            @map("vehicle_id")
+  fareType               String             @map("fare_type")
+  priceSource            String             @default("ROUTE_DEFAULT") @map("price_source")
+  scheduledPickupTime    DateTime           @map("scheduled_pickup_time")
+  estimatedArrivalWindow String?            @map("estimated_arrival_window")
+  leadPassengerName      String             @map("lead_passenger_name")
+  leadPassengerEmail     String             @map("lead_passenger_email")
+  leadPassengerPhone     String             @map("lead_passenger_phone")
+  passengerCount         Int                @map("passenger_count")
+  luggageCount           Int                @map("luggage_count")
+  flightNumber           String?            @map("flight_number")
+  cruiseNumber           String?            @map("cruise_number")
+  childSeats             Int                @default(0) @map("child_seats")
+  specialNotes           String?            @map("special_notes")
+  travelDetails          String?            @map("travel_details")
+  flexChangeCount        Int                @default(0) @map("flex_change_count")
+  bookingSource          String             @default("MARKETPLACE") @map("booking_source")
+  bookingStatus          String             @default("REQUESTED") @map("booking_status")
+  rideStatus             String?            @map("ride_status")
+  ticketNumber           String?            @unique @map("ticket_number")
+  refundEligibleAmountCents Int             @default(0) @map("refund_eligible_amount_cents")
+  creditAmountCents      Int                @default(0) @map("credit_amount_cents")
+  cancellationReason     String?            @map("cancellation_reason")
+  cancelledAt            DateTime?          @map("cancelled_at")
+  modifiedAt             DateTime?          @map("modified_at")
+  totalAmountCents       Int                @map("total_amount_cents")
+  marketplaceFeeCents    Int                @map("marketplace_fee_cents")
+  operatorPayoutCents    Int                @map("operator_payout_cents")
+  platformRevenueCents   Int                @map("platform_revenue_cents")
+  customer               CustomerProfile    @relation(fields: [customerId], references: [id], onDelete: Restrict)
+  operator               OperatorProfile    @relation(fields: [operatorId], references: [id], onDelete: Restrict)
+  route                  Route              @relation(fields: [routeId], references: [id], onDelete: Restrict)
+  departure              RouteDeparture     @relation(fields: [departureId], references: [id], onDelete: Restrict)
+  assignedDriver         DriverProfile?     @relation(fields: [assignedDriverId], references: [id], onDelete: SetNull)
+  vehicle                Vehicle?           @relation(fields: [vehicleId], references: [id], onDelete: SetNull)
+  passengers             BookingPassenger[]
+  changeHistory          BookingChange[]
+  messages               BookingMessage[]
+  events                 BookingEvent[]
+  payments               Payment[]
+  notifications          Notification[]
+  createdAt              DateTime           @default(now()) @map("created_at")
+  updatedAt              DateTime           @updatedAt @map("updated_at")
+
+  @@index([customerId, scheduledPickupTime])
+  @@index([operatorId, scheduledPickupTime])
+  @@index([routeId])
+  @@index([assignedDriverId])
+  @@map("bookings")
+}
+
+model BookingEvent {
+  id          String   @id @default(uuid())
+  bookingId   String   @map("booking_id")
+  eventType   String   @map("event_type")
+  oldValue    String?  @map("old_value")
+  newValue    String?  @map("new_value")
+  performedBy String   @map("performed_by")
+  booking     Booking  @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  @@index([bookingId, createdAt])
+  @@map("booking_events")
+}
+
+model BookingPassenger {
+  id                    String   @id @default(uuid())
+  bookingId             String   @map("booking_id")
+  passengerNumber       Int      @map("passenger_number")
+  passengerName         String?  @map("passenger_name")
+  qrCodeToken           String   @unique @map("qr_code_token")
+  status                String   @default("PENDING_NAME")
+  checkedInAt           DateTime? @map("checked_in_at")
+  checkedInByOperatorId String?  @map("checked_in_by_operator_id")
+  booking               Booking  @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  checkedInByOperator   OperatorProfile? @relation("PassengerCheckedInBy", fields: [checkedInByOperatorId], references: [id], onDelete: SetNull)
+  createdAt             DateTime @default(now()) @map("created_at")
+  updatedAt             DateTime @updatedAt @map("updated_at")
+
+  @@unique([bookingId, passengerNumber])
+  @@map("booking_passengers")
+}
+
+model BookingChange {
+  id                  String   @id @default(uuid())
+  bookingId           String   @map("booking_id")
+  previousDepartureId String   @map("previous_departure_id")
+  newDepartureId      String   @map("new_departure_id")
+  changedByRole       String   @map("changed_by_role")
+  createdAt           DateTime @default(now()) @map("created_at")
+  booking             Booking  @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+
+  @@map("booking_changes")
+}
+
+model Payment {
+  id                    String        @id @default(uuid())
+  bookingId             String        @map("booking_id")
+  amountCents           Int           @map("amount_cents")
+  marketplaceFeeCents   Int           @map("marketplace_fee_cents")
+  operatorPayoutCents   Int           @map("operator_payout_cents")
+  platformRevenueCents  Int           @map("platform_revenue_cents")
+  currency              String        @default("USD")
+  status                String        @default("PENDING")
+  provider              String?
+  providerReference     String?       @map("provider_reference")
+  booking               Booking       @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  createdAt             DateTime      @default(now()) @map("created_at")
+  updatedAt             DateTime      @updatedAt @map("updated_at")
+
+  @@index([bookingId])
+  @@map("payments")
+}
+
+model BookingMessage {
+  id          String      @id @default(uuid())
+  senderId    String      @map("sender_id")
+  receiverId  String      @map("receiver_id")
+  bookingId   String      @map("booking_id")
+  message     String
+  messageType String      @default("TEXT") @map("message_type")
+  sender      User        @relation("MessageSender", fields: [senderId], references: [id], onDelete: Restrict)
+  receiver    User        @relation("MessageReceiver", fields: [receiverId], references: [id], onDelete: Restrict)
+  booking     Booking     @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  createdAt   DateTime    @default(now()) @map("created_at")
+
+  @@index([bookingId, createdAt])
+  @@index([senderId])
+  @@index([receiverId])
+  @@map("booking_messages")
+}
+
+model Document {
+  id          String          @id @default(uuid())
+  operatorId  String          @map("operator_id")
+  type        String
+  status      String          @default("PENDING")
+  fileUrl     String          @map("file_url")
+  notes       String?
+  operator    OperatorProfile @relation(fields: [operatorId], references: [id], onDelete: Cascade)
+  createdAt   DateTime        @default(now()) @map("created_at")
+  updatedAt   DateTime        @updatedAt @map("updated_at")
+
+  @@map("documents")
+}
+
+model Notification {
+  id        String             @id @default(uuid())
+  userId    String             @map("user_id")
+  bookingId String?            @map("booking_id")
+  type      String
+  status    String             @default("UNREAD")
+  title     String
+  body      String
+  user      User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  booking   Booking?           @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  createdAt DateTime           @default(now()) @map("created_at")
+
+  @@index([userId, status])
+  @@map("notifications")
+}
+
+model OutreachContact {
+  id          String           @id @default(uuid())
+  operatorId  String?          @map("operator_id")
+  companyName String           @map("company_name")
+  contactName String?          @map("contact_name")
+  email       String?
+  phone       String?
+  status      String           @default("NEW")
+  operator    OperatorProfile? @relation(fields: [operatorId], references: [id], onDelete: SetNull)
+  createdAt   DateTime         @default(now()) @map("created_at")
+  updatedAt   DateTime         @updatedAt @map("updated_at")
+
+  @@map("outreach_contacts")
+}
+
+model ImportBatch {
+  id          String       @id @default(uuid())
+  source      String
+  status      String       @default("PENDING")
+  recordCount Int          @default(0) @map("record_count")
+  notes       String?
+  createdAt   DateTime     @default(now()) @map("created_at")
+  updatedAt   DateTime     @updatedAt @map("updated_at")
+
+  @@map("import_batches")
+}
+
+model AuditLog {
+  id        String   @id @default(uuid())
+  actorId   String?  @map("actor_id")
+  action    String
+  entity    String
+  entityId  String?  @map("entity_id")
+  metadata  String?
+  actor     User?    @relation(fields: [actorId], references: [id], onDelete: SetNull)
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@index([entity, entityId])
+  @@map("audit_logs")
+}
+
+model Event {
+  id                 String   @id @default(uuid())
+  name               String
+  venueId            String   @map("venue_id")
+  cityId             String   @map("city_id")
+  startDate          DateTime @map("start_date")
+  endDate            DateTime @map("end_date")
+  expectedAttendance Int?     @map("expected_attendance")
+  bookingEnabled     Boolean  @default(false) @map("booking_enabled")
+  status             String   @default("PLANNED")
+  venue              Location @relation(fields: [venueId], references: [id], onDelete: Cascade)
+  city               City     @relation(fields: [cityId], references: [id], onDelete: Cascade)
+  createdAt          DateTime @default(now()) @map("created_at")
+  updatedAt          DateTime @updatedAt @map("updated_at")
+
+  @@map("events")
+}
+
+model CruiseShip {
+  id              String           @id @default(uuid())
+  shipName        String           @map("ship_name")
+  cruiseLine      String           @map("cruise_line")
+  cruiseSchedules CruiseSchedule[]
+  createdAt       DateTime         @default(now()) @map("created_at")
+  updatedAt       DateTime         @updatedAt @map("updated_at")
+
+  @@unique([shipName, cruiseLine])
+  @@map("cruise_ships")
+}
+
+model CruiseSchedule {
+  id                  String     @id @default(uuid())
+  shipId              String     @map("ship_id")
+  terminalId          String     @map("terminal_id")
+  arrivalDate         DateTime   @map("arrival_date")
+  arrivalTime         String?    @map("arrival_time")
+  departureTime       String?    @map("departure_time")
+  estimatedPassengers Int?       @map("estimated_passengers")
+  disembarkStart      String?    @map("disembark_start")
+  disembarkEnd        String?    @map("disembark_end")
+  source              String?
+  activeStatus        String     @default("ACTIVE") @map("active_status")
+  ship                CruiseShip @relation(fields: [shipId], references: [id], onDelete: Cascade)
+  terminal            Location   @relation(fields: [terminalId], references: [id], onDelete: Cascade)
+  createdAt           DateTime   @default(now()) @map("created_at")
+  updatedAt           DateTime   @updatedAt @map("updated_at")
+
+  @@map("cruise_schedules")
+}
