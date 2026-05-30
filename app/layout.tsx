@@ -3,8 +3,8 @@ import type { ReactNode } from "react";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "ShuttleFlow",
-  description: "Production foundation for ShuttleFlow ride booking visibility.",
+  title: "Waylo",
+  description: "Production foundation for Waylo ride booking visibility.",
 };
 
 export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {

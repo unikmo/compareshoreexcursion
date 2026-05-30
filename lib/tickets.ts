@@ -17,7 +17,7 @@ function dateStamp(value: Date) {
 
 function cityCode(cityName: string) {
   const code = cityCodes[cityName];
-  if (!code) throw new Error(`Missing ShuttleFlow ticket city code for ${cityName}.`);
+  if (!code) throw new Error(`Missing Waylo ticket city code for ${cityName}.`);
   return code;
 }
 

@@ -34,10 +34,10 @@ function routeLabel(booking: EmailBooking) {
 
 async function sendEmail(payload: { to: string; subject: string; text: string }) {
   const apiKey = process.env.RESEND_API_KEY;
-  const from = process.env.EMAIL_FROM || "ShuttleFlow <onboarding@resend.dev>";
+  const from = process.env.EMAIL_FROM || "Waylo <onboarding@resend.dev>";
 
   if (!apiKey) {
-    console.log("[ShuttleFlow email not sent: RESEND_API_KEY missing]", payload);
+    console.log("[Waylo email not sent: RESEND_API_KEY missing]", payload);
     return { sent: false, provider: "resend", payload };
   }
 
@@ -50,12 +50,12 @@ async function sendEmail(payload: { to: string; subject: string; text: string })
   });
 
   if (result.error) {
-    console.error("[ShuttleFlow email failed]", result.error);
-    console.error("[ShuttleFlow email payload]", payload);
+    console.error("[Waylo email failed]", result.error);
+    console.error("[Waylo email payload]", payload);
     return { sent: false, provider: "resend", payload, error: result.error };
   }
 
-  console.log("[ShuttleFlow email sent]", { to: payload.to, subject: payload.subject, id: result.data?.id });
+  console.log("[Waylo email sent]", { to: payload.to, subject: payload.subject, id: result.data?.id });
   return { sent: true, provider: "resend", id: result.data?.id, payload };
 }
 
@@ -64,7 +64,7 @@ export async function queueBookingConfirmationEmail(booking: EmailBooking) {
   const ticketNumber = booking.ticketNumber;
   const payload = {
     to: booking.leadPassengerEmail,
-    subject: `Your ShuttleFlow booking is confirmed \u2014 ${ticketNumber}`,
+    subject: `Your Waylo booking is confirmed \u2014 ${ticketNumber}`,
     text: [
       "Booking confirmed",
       "",
@@ -89,7 +89,7 @@ export async function queueBoardingPassReadyEmail(booking: BoardingPassBooking) 
   if (!ticketNumber) throw new Error("Cannot send boarding pass email before ticket number is generated.");
   const payload = {
     to: booking.leadPassengerEmail,
-    subject: `Your ShuttleFlow boarding pass is ready \u2014 ${ticketNumber}`,
+    subject: `Your Waylo boarding pass is ready \u2014 ${ticketNumber}`,
     text: [
       "Boarding pass ready",
       "",

@@ -11,7 +11,7 @@ export async function getCurrentUser(): Promise<AuthenticatedUser | null> {
   // Supabase Auth will hydrate this from server cookies once the project keys are configured.
   return {
     id: "demo-user",
-    email: "demo@shuttleflow.local",
+    email: "demo@Waylo.local",
     role: "ADMIN",
   };
 }

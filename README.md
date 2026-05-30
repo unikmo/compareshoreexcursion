@@ -1,6 +1,6 @@
-# ShuttleFlow
+# Waylo
 
-ShuttleFlow is an asset-light shuttle marketplace for fixed, predictable mobility corridors. The platform owns no vans. It connects customers with verified shuttle operators on predefined routes only.
+Waylo is an asset-light shuttle marketplace for fixed, predictable mobility corridors. The platform owns no vans. It connects customers with verified shuttle operators on predefined routes only.
 
 ## Current MVP Scope
 
