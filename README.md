@@ -1,9 +1,14 @@
 # Waylo
 
-Waylo is an asset-light shuttle marketplace for fixed, predictable mobility corridors. The platform owns no vans. It connects customers with verified shuttle operators on predefined routes only.
+Waylo is an asset-light, fixed-fare shuttle marketplace for scheduled hub-to-hub mobility corridors.
 
-## Current MVP Scope
+Waylo does not own vehicles. It connects passengers with verified shuttle operators on predefined routes between fixed hubs such as airports, city hubs, cruise terminals, ports, event venues, convention centers, and trade fair locations.
 
+Waylo is not door-to-door transport. It does not support arbitrary pickup/dropoff addresses, hotel-by-hotel routing, Uber-style dispatch, surge pricing, or dynamic pricing.
+
+The platform is built around clear scheduled departures, fixed pickup hubs, fixed dropoff hubs, transparent fares, visible seat availability, ticket proof, payment handling, and operator coordination.
+
+Convention centers, trade fairs, concerts, stadiums, and major event venues are supported as fixed demand nodes. They are enabled only when relevant demand exists, not as always-on dynamic routing targets.
 - SQLite local development with Prisma.
 - Next.js App Router and TypeScript.
 - Global search hierarchy: Country, City, From, To, Departure date, Passengers.
@@ -108,3 +113,4 @@ The seed creates:
 ## Next Recommended Build Step
 
 Replace placeholder auth with real Supabase session hydration and ownership checks, then add focused tests around booking creation, price resolution, Flex changes, and passenger check-in.
+
