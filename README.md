@@ -9,6 +9,9 @@ Waylo is not door-to-door transport. It does not support arbitrary pickup/dropof
 The platform is built around clear scheduled departures, fixed pickup hubs, fixed dropoff hubs, transparent fares, visible seat availability, ticket proof, payment handling, and operator coordination.
 
 Convention centers, trade fairs, concerts, stadiums, and major event venues are supported as fixed demand nodes. They are enabled only when relevant demand exists, not as always-on dynamic routing targets.
+
+## Current MVP Scope
+
 - SQLite local development with Prisma.
 - Next.js App Router and TypeScript.
 - Global search hierarchy: Country, City, From, To, Departure date, Passengers.
@@ -113,4 +116,5 @@ The seed creates:
 ## Next Recommended Build Step
 
 Replace placeholder auth with real Supabase session hydration and ownership checks, then add focused tests around booking creation, price resolution, Flex changes, and passenger check-in.
+
 
