@@ -1,6 +1,7 @@
 {
-  "name": "waylo",
+  "name": "compare-shore-excursions",
   "version": "0.1.0",
+  "description": "Compare cruise shore excursions - price, value, and protection",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -8,24 +9,15 @@
     "start": "next start",
     "lint": "next lint",
     "prisma:generate": "prisma generate",
-    "prisma:migrate": "prisma migrate dev",
-    "prisma:seed": "prisma db seed"
-  },
-  "prisma": {
-    "seed": "tsx prisma/seed.ts"
+    "prisma:migrate": "prisma migrate dev"
   },
   "dependencies": {
     "@prisma/client": "^5.22.0",
-    "@stripe/react-stripe-js": "^3.10.0",
-    "@stripe/stripe-js": "^5.10.0",
-    "@supabase/ssr": "^0.5.2",
     "@supabase/supabase-js": "^2.46.1",
     "next": "^15.0.3",
     "prisma": "^5.22.0",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "resend": "^4.8.0",
-    "stripe": "^17.7.0"
+    "react-dom": "^19.0.0"
   },
   "devDependencies": {
     "@types/node": "^22.9.0",

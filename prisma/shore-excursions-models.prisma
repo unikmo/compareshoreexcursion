@@ -1,0 +1,85 @@
+// Add these models to prisma/schema.prisma after the existing generator/datasource blocks.
+
+model Port {
+  id        String   @id @default(cuid())
+  name      String
+  country   String?
+  region    String?
+  slug      String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ExcursionActivity {
+  id          String   @id @default(cuid())
+  portSlug    String
+  name        String
+  slug        String
+  category    String
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([portSlug, slug])
+}
+
+model ExcursionOffer {
+  id                String   @id @default(cuid())
+  activitySlug       String
+  portSlug           String
+  provider           String
+  providerType       String
+  title              String
+  description        String?
+  priceCents         Int?
+  currency           String   @default("EUR")
+  durationMinutes    Int?
+  rating             Float?
+  reviewCount        Int?
+  meetingPoint       String?
+  pickupIncluded     Boolean?
+  cancellationPolicy String?
+  returnToShipSignal String?
+  affiliateUrl       String?
+  sourceUrl          String?
+  sourceType         String?
+  confidence         String   @default("MEDIUM")
+  lastCheckedAt      DateTime?
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+}
+
+model ExcursionComparison {
+  id                    String   @id @default(cuid())
+  portSlug              String
+  activitySlug          String
+  cruiseLine            String?
+  shipName              String?
+  sailingDate           DateTime?
+  officialPriceCents    Int?
+  bestIndependentCents  Int?
+  estimatedSavingsCents Int?
+  verdict               String?
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+}
+
+model Lead {
+  id          String   @id @default(cuid())
+  email       String
+  source      String?
+  portSlug    String?
+  activity    String?
+  sailingDate DateTime?
+  createdAt   DateTime @default(now())
+}
+
+model AffiliateClick {
+  id          String   @id @default(cuid())
+  provider    String
+  targetUrl   String
+  portSlug    String?
+  activity    String?
+  source      String?
+  createdAt   DateTime @default(now())
+}
