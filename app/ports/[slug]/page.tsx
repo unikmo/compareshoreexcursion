@@ -26,10 +26,21 @@ function ActivityCard({ item, port, rank, quiet = false }: ActivityCardProps) {
         <p>{item.note}</p>
       </div>
       <a href={href} target="_blank" rel="sponsored noreferrer noopener">
-        See live tours <span aria-hidden="true">↗</span>
+        View options on Viator <span aria-hidden="true">↗</span>
       </a>
     </article>
   );
+}
+
+const seoTitles: Record<string, string> = {
+  cozumel: "Best Cozumel Shore Excursions: 6 Port Day Picks",
+  nassau: "Best Things to Do in Nassau on a Cruise Port Day",
+  barcelona: "Independent Shore Excursions in Barcelona",
+  "civitavecchia-rome": "Rome Cruise Port: Best Tours from Civitavecchia",
+};
+
+function getSeoTitle(port: Port) {
+  return seoTitles[port.slug] ?? `Best ${port.name} Shore Excursions: 6 Port Day Picks`;
 }
 
 export function generateStaticParams() {
@@ -41,12 +52,14 @@ export async function generateMetadata({ params }: PortPageProps): Promise<Metad
   const port = getPort(slug);
   if (!port) return {};
 
+  const title = getSeoTitle(port);
+
   return {
-    title: `6 Best Independent ${port.name} Shore Excursions`,
+    title,
     description: `${port.heroLine} Compare three top ${port.name} shore-excursion ideas and three less-obvious alternatives, with live options on Viator.`,
     alternates: { canonical: `/ports/${port.slug}` },
     openGraph: {
-      title: `6 Best Independent ${port.name} Shore Excursions`,
+      title,
       description: port.heroLine,
       url: `/ports/${port.slug}`,
       type: "article",
@@ -102,7 +115,7 @@ export default async function PortPage({ params }: PortPageProps) {
         <div className="cse-section-heading">
           <div>
             <p className="cse-eyebrow">Start here</p>
-            <h2>The three strongest ways to spend the day</h2>
+            <h2>The 3 Best Picks</h2>
           </div>
           <p className="cse-heading-note">We rank activity types, not operators. Viator shows live suppliers, prices, reviews and terms. These are affiliate links; booking through them may earn us a commission at no extra cost to you.</p>
         </div>
@@ -111,10 +124,18 @@ export default async function PortPage({ params }: PortPageProps) {
         </div>
       </section>
 
+      <section className="cse-first-time-pick">
+        <div>
+          <p className="cse-eyebrow">Best for First-Time Visitors</p>
+          <h2>{port.topActivities[0].title}</h2>
+        </div>
+        <p>{port.topActivities[0].note}</p>
+      </section>
+
       <section className="cse-niche-section">
         <details>
           <summary>
-            <span><small>Less obvious</small><strong>See three niche {port.name} ideas</strong></span>
+            <span><small>Worth a look</small><strong>3 Less-Obvious Alternatives</strong></span>
             <b aria-hidden="true">+</b>
           </summary>
           <div className="cse-niche-activities">
@@ -127,8 +148,9 @@ export default async function PortPage({ params }: PortPageProps) {
 
       <section className="cse-section cse-booking-checks">
         <div>
-          <p className="cse-eyebrow">Before you click through</p>
-          <h2>Three checks protect the port day.</h2>
+          <p className="cse-eyebrow">Getting Back to the Ship</p>
+          <h2>Plan the return before you book.</h2>
+          <p className="cse-heading-note">{port.portNote}</p>
         </div>
         <div className="cse-check-grid">
           <article><span>01</span><h3>Match the terminal</h3><p>Confirm the exact berth, tender or independent meeting point named in the listing.</p></article>
@@ -138,16 +160,16 @@ export default async function PortPage({ params }: PortPageProps) {
       </section>
 
       <section className="cse-compact-explainer">
-        <div><p className="cse-eyebrow">Affiliate-only by design</p><h2>One clean handoff.</h2></div>
+        <div><p className="cse-eyebrow">Book with Our Partner</p><h2>Check live options on Viator.</h2></div>
         <div>
-          <p>Compare Shore Excursions provides independent research. It does not operate tours, collect payment or guarantee return to the ship.</p>
+          <p>PortDay Picks provides independent research. It does not operate tours, collect payment or guarantee return to the ship.</p>
           <p>When you follow a link, Viator displays the live inventory and handles the booking process. The selected local supplier delivers the experience.</p>
           <p className="cse-disclosure">We may earn a commission from qualifying Viator bookings, at no additional cost to you.</p>
         </div>
       </section>
 
       <div className="cse-next-port">
-        <Link href="/ports">← Compare another cruise port</Link>
+        <Link href="/ports">← Choose another cruise port</Link>
       </div>
 
       <SiteFooter />
