@@ -1,35 +1,64 @@
+import type { Metadata } from "next";
 import Link from "next/link";
-import "../shore-excursions.css";
-import { PORTS } from "./port-data";
+import { SiteFooter, SiteHeader } from "../components/site-shell";
+import { ports, regions } from "./port-data";
+
+export const metadata: Metadata = {
+  title: "Cruise Ports and Independent Shore Excursions",
+  description:
+    "Browse 60 major cruise ports across the Caribbean, Mediterranean, Alaska, Europe, Asia-Pacific, Africa, the Middle East and South America.",
+  alternates: { canonical: "/ports" },
+};
+
+const regionId = (region: string) => region.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
 
 export default function PortsPage() {
   return (
     <main className="cse-page">
-      <nav className="cse-nav" aria-label="Main navigation">
-        <Link href="/" className="cse-logo">Compare Shore Excursions</Link>
-        <div className="cse-nav-links">
-          <Link href="/">Home</Link>
-          <Link href="/group-matching">Group matching</Link>
-        </div>
+      <SiteHeader />
+
+      <section className="cse-directory-hero">
+        <p className="cse-eyebrow">60 curated cruise ports</p>
+        <h1>Find your port. See the six ideas that fit it.</h1>
+        <p>
+          Every guide leads with three strong independent activities. Three less-obvious alternatives stay secondary, so the page remains useful without becoming another endless marketplace.
+        </p>
+      </section>
+
+      <nav className="cse-region-nav" aria-label="Jump to a cruise region">
+        {regions.map((region) => <a href={`#${regionId(region)}`} key={region}>{region}</a>)}
       </nav>
 
-      <section className="cse-card cse-stack-section">
-        <p className="cse-eyebrow">Indexed cruise ports</p>
-        <h1 className="cse-page-title">Build many port pages now. Deepen pricing data where demand appears.</h1>
-        <p className="cse-subhead small">
-          The first version should index broad port coverage for SEO while using mock comparison scaffolds until live provider and official cruise-line pricing is connected.
-        </p>
-        <div className="cse-port-grid">
-          {PORTS.map((port) => (
-            <Link href={`/ports/${port.slug}`} key={port.slug} className="cse-port-card with-image">
-              <img src={port.image} alt={port.imageAlt} />
-              <span>{port.region} · {port.country}</span>
-              <strong>{port.name}</strong>
-              <small>{port.activities.slice(0, 3).join(" · ")}</small>
-            </Link>
-          ))}
-        </div>
-      </section>
+      <div className="cse-region-directory">
+        {regions.map((region) => {
+          const regionPorts = ports.filter((item) => item.region === region);
+          return (
+            <section className="cse-region-section" id={regionId(region)} key={region}>
+              <div className="cse-region-heading">
+                <div><p className="cse-eyebrow">Cruise region</p><h2>{region}</h2></div>
+                <span>{regionPorts.length} ports</span>
+              </div>
+              <div className="cse-port-link-grid">
+                {regionPorts.map((port) => (
+                  <Link href={`/ports/${port.slug}`} key={port.slug}>
+                    <span>{port.country}</span>
+                    <strong>{port.name}</strong>
+                    <small>{port.topActivities[0].title}</small>
+                    <b>View guide →</b>
+                  </Link>
+                ))}
+              </div>
+            </section>
+          );
+        })}
+      </div>
+
+      <aside className="cse-coverage-note">
+        <strong>Why not list every harbour?</strong>
+        <p>We publish a port only when independent inventory exists and six recommendations can be made genuinely specific. Thin or duplicated pages stay out of the index.</p>
+      </aside>
+
+      <SiteFooter />
     </main>
   );
 }
