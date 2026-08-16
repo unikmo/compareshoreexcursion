@@ -1,6 +1,6 @@
-# Compare Shore Excursions
+# PortDay Picks
 
-Compare Shore Excursions is an affiliate-only editorial discovery site for cruise passengers.
+PortDay Picks is an affiliate-only editorial discovery site for cruise passengers at [PortDayPicks.com](https://portdaypicks.com).
 
 It answers one question:
 
@@ -12,10 +12,11 @@ The site does not sell tours, operate excursions, onboard drivers, collect payme
 
 Every indexed port page follows the same strict hierarchy:
 
-1. **Three top activities** — prominent, port-specific and broad enough to have dependable independent inventory.
-2. **Three niche alternatives** — less obvious choices placed inside a secondary disclosure so they do not compete with the main decision.
-3. **Three port-day checks** — terminal, timing and operator terms.
-4. **One affiliate handoff** — live inventory, prices, reviews, payment and support on Viator.
+1. **The 3 Best Picks** — prominent, port-specific and broad enough to have dependable independent inventory.
+2. **3 Less-Obvious Alternatives** — worthwhile choices placed inside a secondary disclosure so they do not compete with the main decision.
+3. **Best for First-Time Visitors** — a single clear starting point.
+4. **Getting Back to the Ship** — terminal, timing and operator-term checks.
+5. **Book with Our Partner** — live inventory, prices, reviews, payment and support on Viator.
 
 There are no fake prices, copied review counts, provider grids, booking forms, lead forms or group-matching features.
 
@@ -91,7 +92,7 @@ Open `http://localhost:3000`.
 Create `.env.local` from `.env.example`:
 
 ```bash
-NEXT_PUBLIC_SITE_URL=https://your-domain.com
+NEXT_PUBLIC_SITE_URL=https://portdaypicks.com
 VIATOR_AFFILIATE_PID=your_pid
 VIATOR_AFFILIATE_MCID=your_mcid
 ```
