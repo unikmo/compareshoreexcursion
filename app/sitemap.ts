@@ -2,7 +2,7 @@ import type { MetadataRoute } from "next";
 import { ports } from "./ports/port-data";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://portdaypicks.com";
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://shoreexcursionpicks.com";
 
   return [
     { url: baseUrl, changeFrequency: "weekly", priority: 1 },
