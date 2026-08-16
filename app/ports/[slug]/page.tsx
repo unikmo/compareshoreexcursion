@@ -33,14 +33,14 @@ function ActivityCard({ item, port, rank, quiet = false }: ActivityCardProps) {
 }
 
 const seoTitles: Record<string, string> = {
-  cozumel: "Best Cozumel Shore Excursions: 6 Port Day Picks",
+  cozumel: "Best Cozumel Shore Excursions: 6 Curated Picks",
   nassau: "Best Things to Do in Nassau on a Cruise Port Day",
   barcelona: "Independent Shore Excursions in Barcelona",
   "civitavecchia-rome": "Rome Cruise Port: Best Tours from Civitavecchia",
 };
 
 function getSeoTitle(port: Port) {
-  return seoTitles[port.slug] ?? `Best ${port.name} Shore Excursions: 6 Port Day Picks`;
+  return seoTitles[port.slug] ?? `Best ${port.name} Shore Excursions: 6 Curated Picks`;
 }
 
 export function generateStaticParams() {
@@ -162,7 +162,7 @@ export default async function PortPage({ params }: PortPageProps) {
       <section className="cse-compact-explainer">
         <div><p className="cse-eyebrow">Book with Our Partner</p><h2>Check live options on Viator.</h2></div>
         <div>
-          <p>PortDay Picks provides independent research. It does not operate tours, collect payment or guarantee return to the ship.</p>
+          <p>Shore Excursion Picks provides independent research. It does not operate tours, collect payment or guarantee return to the ship.</p>
           <p>When you follow a link, Viator displays the live inventory and handles the booking process. The selected local supplier delivers the experience.</p>
           <p className="cse-disclosure">We may earn a commission from qualifying Viator bookings, at no additional cost to you.</p>
         </div>
