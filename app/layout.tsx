@@ -2,23 +2,23 @@ import type { Metadata } from "next";
 import "./globals.css";
 import "./shore-excursions.css";
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://08waylo-temp.vercel.app";
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://portdaypicks.com";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "Compare Shore Excursions",
-    template: "%s | Compare Shore Excursions",
+    default: "PortDay Picks",
+    template: "%s | PortDay Picks",
   },
   description:
-    "Find three standout independent shore excursions and three niche alternatives for 60 major cruise ports, with live tours and booking on Viator.",
+    "Find three standout independent shore excursions and three worthwhile alternatives for 60 major cruise ports.",
   alternates: { canonical: "/" },
   openGraph: {
-    title: "Compare Shore Excursions",
+    title: "PortDay Picks",
     description:
-      "Port-specific independent shore-excursion ideas, edited down to the six choices worth considering.",
+      "The best of every port—without the endless searching.",
     url: siteUrl,
-    siteName: "Compare Shore Excursions",
+    siteName: "PortDay Picks",
     type: "website",
   },
   robots: { index: true, follow: true },
