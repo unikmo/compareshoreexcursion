@@ -1,6 +1,6 @@
-# PortDay Picks
+# Shore Excursion Picks
 
-PortDay Picks is an affiliate-only editorial discovery site for cruise passengers at [PortDayPicks.com](https://portdaypicks.com).
+Shore Excursion Picks is an affiliate-only editorial discovery site for cruise passengers at [ShoreExcursionPicks.com](https://shoreexcursionpicks.com).
 
 It answers one question:
 
@@ -92,7 +92,7 @@ Open `http://localhost:3000`.
 Create `.env.local` from `.env.example`:
 
 ```bash
-NEXT_PUBLIC_SITE_URL=https://portdaypicks.com
+NEXT_PUBLIC_SITE_URL=https://shoreexcursionpicks.com
 VIATOR_AFFILIATE_PID=your_pid
 VIATOR_AFFILIATE_MCID=your_mcid
 ```
