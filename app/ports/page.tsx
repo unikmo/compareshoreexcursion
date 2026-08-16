@@ -4,7 +4,7 @@ import { SiteFooter, SiteHeader } from "../components/site-shell";
 import { ports, regions } from "./port-data";
 
 export const metadata: Metadata = {
-  title: "Cruise Ports and Independent Shore Excursions",
+  title: "Cruise Ports: Curated Independent Shore Excursions",
   description:
     "Browse 60 major cruise ports across the Caribbean, Mediterranean, Alaska, Europe, Asia-Pacific, Africa, the Middle East and South America.",
   alternates: { canonical: "/ports" },
@@ -17,9 +17,9 @@ export default function PortsPage() {
     <main className="cse-page">
       <SiteHeader />
 
-      <section className="cse-directory-hero">
+      <section className="cse-directory-hero" id="all-ports">
         <p className="cse-eyebrow">60 curated cruise ports</p>
-        <h1>Find your port. See the six ideas that fit it.</h1>
+        <h1>Choose your port. See the six experiences that fit it.</h1>
         <p>
           Every guide leads with three strong independent activities. Three less-obvious alternatives stay secondary, so the page remains useful without becoming another endless marketplace.
         </p>
