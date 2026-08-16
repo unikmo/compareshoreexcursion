@@ -4,9 +4,9 @@ import { SiteFooter, SiteHeader } from "./components/site-shell";
 import { getRegionTone, ports } from "./ports/port-data";
 
 export const metadata: Metadata = {
-  title: "Independent Shore Excursions by Cruise Port",
+  title: "Curated Independent Shore Excursions",
   description:
-    "Choose your cruise port and compare three standout independent excursions plus three less-obvious local alternatives. Live tours and booking on Viator.",
+    "Three standout experiences and a few worthwhile alternatives, carefully selected for each cruise port.",
 };
 
 const featuredSlugs = ["roatan", "cozumel", "barcelona", "santorini", "juneau", "civitavecchia-rome"];
@@ -23,15 +23,14 @@ export default function HomePage() {
 
       <section className="cse-home-hero">
         <div className="cse-home-hero-copy">
-          <p className="cse-eyebrow">Independent shore excursions, edited down</p>
-          <h1>Your port. Three excursions worth considering.</h1>
+          <p className="cse-eyebrow">Curated independent shore excursions</p>
+          <h1>Make the most of every port day</h1>
           <p className="cse-lead">
-            Skip the endless tour grid. We surface three port-specific favourites, then keep three more unusual ideas in reserve.
-            Prices, availability and booking stay live on Viator.
+            Three standout experiences and a few worthwhile alternatives—carefully selected for each cruise port.
           </p>
           <div className="cse-actions">
-            <Link className="cse-button cse-button-primary" href="/ports">Find my cruise port</Link>
-            <Link className="cse-button cse-button-secondary" href="/ports/roatan">See a port guide</Link>
+            <Link className="cse-button cse-button-primary" href="/ports">Choose your port</Link>
+            <Link className="cse-button cse-button-secondary" href="/ports#all-ports">Browse all ports</Link>
           </div>
           <ul className="cse-trust-list" aria-label="What to expect">
             <li>60 major cruise ports</li>
@@ -55,7 +54,7 @@ export default function HomePage() {
       </section>
 
       <section className="cse-model-strip" aria-label="Affiliate business model">
-        <strong>Research here.</strong>
+        <strong>The best of every port—without the endless searching.</strong>
         <span>Check the live options on Viator.</span>
         <span>Book and get support there.</span>
       </section>
@@ -101,7 +100,7 @@ export default function HomePage() {
         </div>
         <div>
           <p>
-            Compare Shore Excursions does not take payments, manage drivers, verify insurance or provide a return-to-ship guarantee.
+            PortDay Picks does not take payments, manage drivers, verify insurance or provide a return-to-ship guarantee.
             The local supplier operates the experience and Viator handles the booking transaction and customer-service process.
           </p>
           <p className="cse-disclosure">Affiliate disclosure: we may earn a commission if you book after following one of our Viator links.</p>
