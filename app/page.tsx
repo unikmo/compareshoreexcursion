@@ -6,7 +6,7 @@ import { getRegionTone, ports } from "./ports/port-data";
 export const metadata: Metadata = {
   title: "Curated Independent Shore Excursions",
   description:
-    "Three standout experiences and a few worthwhile alternatives, carefully selected for each cruise port.",
+    "Three standout experiences and three worthwhile alternatives, selected for every cruise port.",
 };
 
 const featuredSlugs = ["roatan", "cozumel", "barcelona", "santorini", "juneau", "civitavecchia-rome"];
@@ -24,9 +24,9 @@ export default function HomePage() {
       <section className="cse-home-hero">
         <div className="cse-home-hero-copy">
           <p className="cse-eyebrow">Curated independent shore excursions</p>
-          <h1>Make the most of every port day</h1>
+          <h1>Find the best shore excursions for your next port</h1>
           <p className="cse-lead">
-            Three standout experiences and a few worthwhile alternatives—carefully selected for each cruise port.
+            Three standout experiences and three worthwhile alternatives, selected for every cruise port.
           </p>
           <div className="cse-actions">
             <Link className="cse-button cse-button-primary" href="/ports">Choose your port</Link>
@@ -54,7 +54,7 @@ export default function HomePage() {
       </section>
 
       <section className="cse-model-strip" aria-label="Affiliate business model">
-        <strong>The best of every port—without the endless searching.</strong>
+        <strong>The best shore excursions—without endless searching.</strong>
         <span>Check the live options on Viator.</span>
         <span>Book and get support there.</span>
       </section>
@@ -100,7 +100,7 @@ export default function HomePage() {
         </div>
         <div>
           <p>
-            PortDay Picks does not take payments, manage drivers, verify insurance or provide a return-to-ship guarantee.
+            Shore Excursion Picks does not take payments, manage drivers, verify insurance or provide a return-to-ship guarantee.
             The local supplier operates the experience and Viator handles the booking transaction and customer-service process.
           </p>
           <p className="cse-disclosure">Affiliate disclosure: we may earn a commission if you book after following one of our Viator links.</p>
