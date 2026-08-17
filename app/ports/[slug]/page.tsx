@@ -1,114 +1,178 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import "../../shore-excursions.css";
-import { getPort, PORTS } from "../port-data";
+import { SiteFooter, SiteHeader } from "../../components/site-shell";
+import { viatorAffiliateUrl } from "../../lib/viator";
+import { getPort, getRegionTone, getViatorSearchUrl, ports } from "../port-data";
+import type { Activity, Port } from "../port-data";
 
-export function generateStaticParams() {
-  return PORTS.map((port) => ({ slug: port.slug }));
+type PortPageProps = { params: Promise<{ slug: string }> };
+
+type ActivityCardProps = {
+  item: Activity;
+  port: Port;
+  rank: number;
+  quiet?: boolean;
+};
+
+function ActivityCard({ item, port, rank, quiet = false }: ActivityCardProps) {
+  const href = viatorAffiliateUrl(getViatorSearchUrl(port, item));
+
+  return (
+    <article className={quiet ? "cse-activity-card cse-activity-card-quiet" : "cse-activity-card"}>
+      <div className="cse-activity-rank">{String(rank).padStart(2, "0")}</div>
+      <div className="cse-activity-copy">
+        <h3>{item.title}</h3>
+        <p>{item.note}</p>
+      </div>
+      <a href={href} target="_blank" rel="sponsored noreferrer noopener">
+        View options on Viator <span aria-hidden="true">↗</span>
+      </a>
+    </article>
+  );
 }
 
-export default async function PortPage({ params }: { params: Promise<{ slug: string }> }) {
+const seoTitles: Record<string, string> = {
+  cozumel: "Best Cozumel Shore Excursions: 6 Curated Picks",
+  nassau: "Best Things to Do in Nassau on a Cruise Port Day",
+  barcelona: "Independent Shore Excursions in Barcelona",
+  "civitavecchia-rome": "Rome Cruise Port: Best Tours from Civitavecchia",
+};
+
+function getSeoTitle(port: Port) {
+  return seoTitles[port.slug] ?? `Best ${port.name} Shore Excursions: 6 Curated Picks`;
+}
+
+export function generateStaticParams() {
+  return ports.map((port) => ({ slug: port.slug }));
+}
+
+export async function generateMetadata({ params }: PortPageProps): Promise<Metadata> {
   const { slug } = await params;
   const port = getPort(slug);
+  if (!port) return {};
 
-  if (!port) {
-    notFound();
-  }
+  const title = getSeoTitle(port);
+
+  return {
+    title,
+    description: `${port.heroLine} Compare three top ${port.name} shore-excursion ideas and three less-obvious alternatives, with live options on Viator.`,
+    alternates: { canonical: `/ports/${port.slug}` },
+    openGraph: {
+      title,
+      description: port.heroLine,
+      url: `/ports/${port.slug}`,
+      type: "article",
+    },
+  };
+}
+
+export default async function PortPage({ params }: PortPageProps) {
+  const { slug } = await params;
+  const port = getPort(slug);
+  if (!port) notFound();
+
+  const allActivities = [...port.topActivities, ...port.nicheActivities];
+  const itemList = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    name: `Best independent shore excursions in ${port.name}`,
+    numberOfItems: allActivities.length,
+    itemListElement: allActivities.map((item, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: item.title,
+      url: viatorAffiliateUrl(getViatorSearchUrl(port, item)),
+    })),
+  };
 
   return (
     <main className="cse-page">
-      <nav className="cse-nav" aria-label="Main navigation">
-        <Link href="/" className="cse-logo">Compare Shore Excursions</Link>
-        <div className="cse-nav-links">
-          <Link href="/ports">Ports</Link>
-          <Link href="/group-matching">Group matching</Link>
+      <SiteHeader />
+
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itemList) }} />
+
+      <div className="cse-breadcrumbs" aria-label="Breadcrumb">
+        <Link href="/">Home</Link><span>/</span><Link href="/ports">Ports</Link><span>/</span><span>{port.name}</span>
+      </div>
+
+      <section className={`cse-port-intro cse-region-${getRegionTone(port.region)}`}>
+        <div>
+          <p className="cse-eyebrow">{port.region} · {port.country}</p>
+          <h1>Best independent shore excursions in {port.name}</h1>
+          <p className="cse-lead">{port.heroLine}</p>
+          <div className="cse-port-trust">
+            <span>3 top picks</span><span>3 niche alternatives</span><span>Live options on Viator</span>
+          </div>
         </div>
-      </nav>
+        <aside>
+          <span>Port-day note</span>
+          <p>{port.portNote}</p>
+        </aside>
+      </section>
 
-      <article className="cse-card cse-port-page">
-        <img className="cse-port-hero-image" src={port.image} alt={port.imageAlt} />
-        <p className="cse-eyebrow">{port.region} / {port.country}</p>
-        <h1>{port.name} shore excursion comparison.</h1>
-        <p>{port.intro}</p>
-
-        <section className="cse-savings-strip">
-          <span>Mock official vs independent gap</span>
-          <strong>{port.savings}</strong>
-          <small>Use this page as the SEO scaffold until live provider data is connected.</small>
-        </section>
-
-        <section className="cse-vertical-comparison" aria-label="Official vs independent comparison">
-          <article className="cse-option-card official">
-            <div>
-              <p className="cse-eyebrow">Official cruise-line option</p>
-              <h2>Cruise-line official {port.heroActivity}</h2>
-              <p>Ship-backed timing protection. Higher price, lower return anxiety.</p>
-            </div>
-            <div className="cse-price-block">
-              <strong>{port.officialPrice}</strong>
-              <span>{port.officialDuration}</span>
-            </div>
-          </article>
-
-          <article className="cse-option-card independent">
-            <div>
-              <p className="cse-eyebrow">Independent alternative</p>
-              <h2>Independent {port.heroActivity}</h2>
-              <p>Lower price. Check meeting point, cancellation terms, reviews, and return buffer before booking.</p>
-              <div className="cse-provider-row">
-                {port.providerLinks.map((link) => (
-                  <a key={link.label} href={link.url} target="_blank" rel="noreferrer" className="cse-provider-link">
-                    {link.source}
-                  </a>
-                ))}
-              </div>
-            </div>
-            <div className="cse-price-block">
-              <strong>{port.independentPrice}</strong>
-              <span>{port.independentDuration}</span>
-            </div>
-          </article>
-        </section>
-
-        <section className="cse-protection-callout">
+      <section className="cse-section cse-picks-section">
+        <div className="cse-section-heading">
           <div>
-            <p className="cse-eyebrow">Protection check</p>
-            <h2>Saving money outside the ship’s excursion desk?</h2>
-            <p>Compare the timing buffer and consider travel protection before giving up the cruise-line safety net.</p>
+            <p className="cse-eyebrow">Start here</p>
+            <h2>The 3 Best Picks</h2>
           </div>
-          <a href="https://www.insuremytrip.com/" target="_blank" rel="noreferrer" className="cse-button dark">Check protection options</a>
-        </section>
+          <p className="cse-heading-note">We rank activity types, not operators. Viator shows live suppliers, prices, reviews and terms. These are affiliate links; booking through them may earn us a commission at no extra cost to you.</p>
+        </div>
+        <div className="cse-primary-activities">
+          {port.topActivities.map((item, index) => <ActivityCard item={item} port={port} rank={index + 1} key={item.title} />)}
+        </div>
+      </section>
 
-        <section className="cse-section-divider">
-          <p className="cse-eyebrow">Shorter tour options</p>
-          <h2>Three shorter {port.name} tours for more return buffer.</h2>
-          <p>Below the official comparison, show shorter independent options. Shorter tours can mean lower prices and more time back near the ship.</p>
-          <div className="cse-short-tour-list">
-            {port.shorterTours.map((tour) => (
-              <a href={tour.url} target="_blank" rel="noreferrer" className="cse-short-tour" key={tour.title}>
-                <span>{tour.provider} · {tour.duration}</span>
-                <strong>{tour.title}</strong>
-                <b>{tour.price}</b>
-                <small>{tour.note}</small>
-              </a>
+      <section className="cse-first-time-pick">
+        <div>
+          <p className="cse-eyebrow">Best for First-Time Visitors</p>
+          <h2>{port.topActivities[0].title}</h2>
+        </div>
+        <p>{port.topActivities[0].note}</p>
+      </section>
+
+      <section className="cse-niche-section">
+        <details>
+          <summary>
+            <span><small>Worth a look</small><strong>3 Less-Obvious Alternatives</strong></span>
+            <b aria-hidden="true">+</b>
+          </summary>
+          <div className="cse-niche-activities">
+            {port.nicheActivities.map((item, index) => (
+              <ActivityCard item={item} port={port} rank={index + 4} quiet key={item.title} />
             ))}
           </div>
-        </section>
+        </details>
+      </section>
 
-        <section className="cse-section-divider">
-          <p className="cse-eyebrow">Activity ideas</p>
-          <h2>Popular {port.name} excursion searches.</h2>
-          <div className="cse-activity-grid">
-            {port.activities.map((activity) => (
-              <article key={activity}>
-                <span>Activity</span>
-                <strong>{activity}</strong>
-                <p>Official vs independent comparison scaffold. Add live affiliate and official pricing when sourcing is ready.</p>
-              </article>
-            ))}
-          </div>
-        </section>
-      </article>
+      <section className="cse-section cse-booking-checks">
+        <div>
+          <p className="cse-eyebrow">Getting Back to the Ship</p>
+          <h2>Plan the return before you book.</h2>
+          <p className="cse-heading-note">{port.portNote}</p>
+        </div>
+        <div className="cse-check-grid">
+          <article><span>01</span><h3>Match the terminal</h3><p>Confirm the exact berth, tender or independent meeting point named in the listing.</p></article>
+          <article><span>02</span><h3>Work backward from all-aboard</h3><p>Allow for local traffic, tender queues and a return margin you are comfortable with.</p></article>
+          <article><span>03</span><h3>Read the operator's terms</h3><p>Check inclusions, cancellation rules and what happens if the ship's schedule changes.</p></article>
+        </div>
+      </section>
+
+      <section className="cse-compact-explainer">
+        <div><p className="cse-eyebrow">Book with Our Partner</p><h2>Check live options on Viator.</h2></div>
+        <div>
+          <p>Shore Excursion Picks provides independent research. It does not operate tours, collect payment or guarantee return to the ship.</p>
+          <p>When you follow a link, Viator displays the live inventory and handles the booking process. The selected local supplier delivers the experience.</p>
+          <p className="cse-disclosure">We may earn a commission from qualifying Viator bookings, at no additional cost to you.</p>
+        </div>
+      </section>
+
+      <div className="cse-next-port">
+        <Link href="/ports">← Choose another cruise port</Link>
+      </div>
+
+      <SiteFooter />
     </main>
   );
 }
