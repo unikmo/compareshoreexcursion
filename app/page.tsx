@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { SiteFooter, SiteHeader } from "./components/site-shell";
 import { getRegionTone, ports } from "./ports/port-data";
+import { getPortImage } from "./ports/port-images";
 
 export const metadata: Metadata = {
   title: "Curated Independent Shore Excursions",
@@ -16,6 +17,8 @@ export default function HomePage() {
     const match = ports.find((item) => item.slug === slug);
     return match ? [match] : [];
   });
+
+  const heroImage = getPortImage({ slug: "roatan", name: "Roatán", region: "Caribbean & Bahamas" });
 
   return (
     <main className="cse-page">
@@ -40,9 +43,12 @@ export default function HomePage() {
         </div>
 
         <div className="cse-editorial-card" aria-label="How a port guide is organised">
-          <div className="cse-editorial-topline">
-            <span>Roatán</span>
-            <span>3 top picks</span>
+          <div className="cse-editorial-visual">
+            <img src={heroImage.src} alt={heroImage.alt} width="900" height="600" fetchPriority="high" />
+            <div className="cse-editorial-topline">
+              <span>Roatán</span>
+              <span>3 top picks</span>
+            </div>
           </div>
           <ol>
             <li><span>01</span><strong>Sloth sanctuary & island highlights</strong></li>
@@ -70,6 +76,14 @@ export default function HomePage() {
         <div className="cse-featured-grid">
           {featuredPorts.map((port) => (
             <Link className={`cse-featured-port cse-region-${getRegionTone(port.region)}`} href={`/ports/${port.slug}`} key={port.slug}>
+              <img
+                className="cse-featured-port-image"
+                src={getPortImage(port).src}
+                alt={getPortImage(port).alt}
+                width="720"
+                height="420"
+                loading="lazy"
+              />
               <span>{port.region}</span>
               <h3>{port.name}</h3>
               <p>{port.topActivities[0].title}</p>
