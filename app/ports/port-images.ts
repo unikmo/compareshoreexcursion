@@ -24,13 +24,11 @@ const portImages: Record<string, EditorialImage> = {
 
 const regionImages: Record<string, EditorialImage> = {
   "Caribbean & Bahamas": unsplash("photo-1507525428034-b723cf961d3e", "A bright Caribbean beach and turquoise water"),
-  Mediterranean: unsplash("photo-1516483638261-f4dbaf036963", "A sunlit Mediterranean destination"),
-  Alaska: unsplash("photo-1464822759023-fed622ff2c3b", "Mountain scenery in Alaska"),
+  "Mediterranean & Adriatic": unsplash("photo-1516483638261-f4dbaf036963", "A sunlit Mediterranean destination"),
+  "Alaska & Pacific Americas": unsplash("photo-1464822759023-fed622ff2c3b", "Mountain scenery in Alaska"),
   "Northern Europe": unsplash("photo-1501785888041-af3ef285b470", "A dramatic northern landscape"),
   "Asia-Pacific": unsplash("photo-1537996194471-e657df975ab4", "A lush temple landscape in the Asia-Pacific region"),
-  Africa: unsplash("photo-1500534314209-a25ddb2bd429", "Warm-toned African landscape"),
-  "Middle East": unsplash("photo-1512453979798-5ea266f8880c", "Modern Middle Eastern skyline"),
-  "South America": unsplash("photo-1483729558449-99ef09a8c325", "Rio de Janeiro between mountains and sea"),
+  "Africa, Middle East & South America": unsplash("photo-1483729558449-99ef09a8c325", "A dramatic coastal destination between mountains and sea"),
 };
 
 const activityImageGroups = [
