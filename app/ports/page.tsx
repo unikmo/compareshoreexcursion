@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { SiteFooter, SiteHeader } from "../components/site-shell";
 import { ports, regions } from "./port-data";
+import { getPortImage } from "./port-images";
 
 export const metadata: Metadata = {
   title: "Cruise Ports: Curated Independent Shore Excursions",
@@ -39,14 +40,26 @@ export default function PortsPage() {
                 <span>{regionPorts.length} ports</span>
               </div>
               <div className="cse-port-link-grid">
-                {regionPorts.map((port) => (
-                  <Link href={`/ports/${port.slug}`} key={port.slug}>
-                    <span>{port.country}</span>
-                    <strong>{port.name}</strong>
-                    <small>{port.topActivities[0].title}</small>
-                    <b>View guide →</b>
-                  </Link>
-                ))}
+                {regionPorts.map((port) => {
+                  const image = getPortImage(port);
+                  return (
+                    <Link href={`/ports/${port.slug}`} key={port.slug}>
+                      <div className="cse-port-link-image">
+                        <img
+                          src={image.src}
+                          alt={image.alt}
+                          width="520"
+                          height="320"
+                          loading="lazy"
+                        />
+                      </div>
+                      <span>{port.country}</span>
+                      <strong>{port.name}</strong>
+                      <small>{port.topActivities[0].title}</small>
+                      <b>View guide →</b>
+                    </Link>
+                  );
+                })}
               </div>
             </section>
           );
