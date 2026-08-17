@@ -1,0 +1,7 @@
+# Local build artifacts
+node_modules/
+.next/
+out/
+
+# Legacy database files are not part of this static affiliate site
+prisma/
