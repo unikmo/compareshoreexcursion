@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { SiteFooter, SiteHeader } from "../../components/site-shell";
 import { viatorAffiliateUrl } from "../../lib/viator";
 import { getPort, getRegionTone, getViatorSearchUrl, ports } from "../port-data";
+import { getActivityImage, getPortImage } from "../port-images";
 import type { Activity, Port } from "../port-data";
 
 type PortPageProps = { params: Promise<{ slug: string }> };
@@ -17,9 +18,15 @@ type ActivityCardProps = {
 
 function ActivityCard({ item, port, rank, quiet = false }: ActivityCardProps) {
   const href = viatorAffiliateUrl(getViatorSearchUrl(port, item));
+  const image = getActivityImage(port, item, rank - 1);
 
   return (
     <article className={quiet ? "cse-activity-card cse-activity-card-quiet" : "cse-activity-card"}>
+      {!quiet && (
+        <div className="cse-activity-card-media">
+          <img src={image.src} alt={image.alt} width="720" height="440" loading="lazy" />
+        </div>
+      )}
       <div className="cse-activity-rank">{String(rank).padStart(2, "0")}</div>
       <div className="cse-activity-copy">
         <h3>{item.title}</h3>
@@ -73,6 +80,7 @@ export default async function PortPage({ params }: PortPageProps) {
   if (!port) notFound();
 
   const allActivities = [...port.topActivities, ...port.nicheActivities];
+  const heroImage = getPortImage(port);
   const itemList = {
     "@context": "https://schema.org",
     "@type": "ItemList",
@@ -105,10 +113,13 @@ export default async function PortPage({ params }: PortPageProps) {
             <span>3 top picks</span><span>3 niche alternatives</span><span>Live options on Viator</span>
           </div>
         </div>
-        <aside>
-          <span>Port-day note</span>
-          <p>{port.portNote}</p>
-        </aside>
+        <div className="cse-port-intro-media">
+          <img src={heroImage.src} alt={heroImage.alt} width="900" height="700" fetchPriority="high" />
+          <aside>
+            <span>Port-day note</span>
+            <p>{port.portNote}</p>
+          </aside>
+        </div>
       </section>
 
       <section className="cse-section cse-picks-section">
