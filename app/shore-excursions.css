@@ -746,3 +746,68 @@ a { color: inherit; text-decoration: none; }
     display: none;
   }
 }
+
+
+/* Port directory card photography */
+.cse-port-link-grid a {
+  min-height: 318px;
+  padding: 0 20px 20px;
+  overflow: hidden;
+}
+
+.cse-port-link-image {
+  position: relative;
+  flex: 0 0 142px;
+  height: 142px;
+  margin: 0 -20px 18px;
+  overflow: hidden;
+  background: #d8e4e1;
+}
+
+.cse-port-link-image::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(180deg, transparent 58%, rgba(8, 31, 35, 0.28));
+}
+
+.cse-port-link-image img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  transition: transform 220ms ease;
+}
+
+.cse-port-link-grid a:hover .cse-port-link-image img {
+  transform: scale(1.035);
+}
+
+.cse-port-link-grid strong {
+  margin-top: 9px;
+}
+
+@media (max-width: 720px) {
+  .cse-port-link-grid a {
+    min-height: 286px;
+    padding: 0 15px 17px;
+  }
+
+  .cse-port-link-image {
+    flex-basis: 126px;
+    height: 126px;
+    margin: 0 -15px 15px;
+  }
+}
+
+@media (max-width: 440px) {
+  .cse-port-link-grid a {
+    min-height: 294px;
+  }
+
+  .cse-port-link-image {
+    flex-basis: 150px;
+    height: 150px;
+  }
+}
