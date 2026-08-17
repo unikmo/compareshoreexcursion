@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { PortFinder } from "./components/port-finder";
 import { SiteFooter, SiteHeader } from "./components/site-shell";
-import { getRegionTone, ports } from "./ports/port-data";
+import { getRegionTone, ports, regions } from "./ports/port-data";
 import { getPortImage } from "./ports/port-images";
 
 export const metadata: Metadata = {
@@ -11,6 +12,7 @@ export const metadata: Metadata = {
 };
 
 const featuredSlugs = ["roatan", "cozumel", "barcelona", "santorini", "juneau", "civitavecchia-rome"];
+const regionId = (region: string) => region.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
 
 export default function HomePage() {
   const featuredPorts = featuredSlugs.flatMap((slug) => {
@@ -19,6 +21,13 @@ export default function HomePage() {
   });
 
   const heroImage = getPortImage({ slug: "roatan", name: "Roatán", region: "Caribbean & Bahamas" });
+  const searchablePorts = ports.map((port) => ({
+    slug: port.slug,
+    name: port.name,
+    country: port.country,
+    region: port.region,
+    topPick: port.topActivities[0].title,
+  }));
 
   return (
     <main className="cse-page">
@@ -32,11 +41,11 @@ export default function HomePage() {
             Three standout experiences and three worthwhile alternatives, selected for every cruise port.
           </p>
           <div className="cse-actions">
-            <Link className="cse-button cse-button-primary" href="/ports">Choose your port</Link>
+            <Link className="cse-button cse-button-primary" href="#port-finder">Choose your port</Link>
             <Link className="cse-button cse-button-secondary" href="/ports#all-ports">Browse all ports</Link>
           </div>
           <ul className="cse-trust-list" aria-label="What to expect">
-            <li>60 major cruise ports</li>
+            <li>{ports.length} major cruise ports</li>
             <li>3 top picks per port</li>
             <li>No checkout on this site</li>
           </ul>
@@ -59,6 +68,34 @@ export default function HomePage() {
         </div>
       </section>
 
+      <section className="cse-port-finder-section" id="port-finder">
+        <div className="cse-port-finder-heading">
+          <div>
+            <p className="cse-eyebrow">All {ports.length} port guides</p>
+            <h2>Where is your ship stopping?</h2>
+          </div>
+          <p>Search by port, country, region or the kind of experience you want.</p>
+        </div>
+
+        <PortFinder ports={searchablePorts} />
+
+        <div className="cse-region-shortcuts">
+          <div className="cse-region-shortcuts-heading">
+            <strong>Browse all {ports.length} ports by region</strong>
+            <Link href="/ports#all-ports">Open the complete directory →</Link>
+          </div>
+          <div>
+            {regions.map((region) => (
+              <Link href={`/ports#${regionId(region)}`} key={region}>
+                <span>{ports.filter((port) => port.region === region).length} ports</span>
+                <strong>{region}</strong>
+                <b aria-hidden="true">→</b>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
       <section className="cse-model-strip" aria-label="Affiliate business model">
         <strong>The best shore excursions—without endless searching.</strong>
         <span>Check the live options on Viator.</span>
@@ -68,8 +105,8 @@ export default function HomePage() {
       <section className="cse-section">
         <div className="cse-section-heading">
           <div>
-            <p className="cse-eyebrow">Popular starting points</p>
-            <h2>Find the day that belongs to this port.</h2>
+            <p className="cse-eyebrow">Six featured ports · not the full catalogue</p>
+            <h2>Popular ports to start with.</h2>
           </div>
           <Link className="cse-text-link" href="/ports">Browse all 60 ports →</Link>
         </div>
