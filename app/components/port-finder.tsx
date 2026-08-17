@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { FormEvent, useState } from "react";
+import { useState } from "react";
+import type { FormEvent } from "react";
 
 export type PortSearchItem = {
   slug: string;
@@ -37,7 +38,7 @@ export function PortFinder({ ports }: PortFinderProps) {
   return (
     <div className="cse-port-finder">
       <form onSubmit={handleSubmit} role="search">
-        <label htmlFor="port-search">Search all 60 port guides</label>
+        <label htmlFor="port-search">Search all {ports.length} port guides</label>
         <div className="cse-port-search-field">
           <span aria-hidden="true">⌕</span>
           <input
