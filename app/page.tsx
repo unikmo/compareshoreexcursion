@@ -4,6 +4,7 @@ import { PortFinder } from "./components/port-finder";
 import { SiteFooter, SiteHeader } from "./components/site-shell";
 import { getRegionTone, ports, regions } from "./ports/port-data";
 import { getPortImage } from "./ports/port-images";
+import { getRegionSlug } from "./ports/region-data";
 
 export const metadata: Metadata = {
   title: "Curated Independent Shore Excursions",
@@ -12,7 +13,6 @@ export const metadata: Metadata = {
 };
 
 const featuredSlugs = ["roatan", "cozumel", "barcelona", "santorini", "juneau", "civitavecchia-rome"];
-const regionId = (region: string) => region.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
 
 export default function HomePage() {
   const featuredPorts = featuredSlugs.flatMap((slug) => {
@@ -42,7 +42,7 @@ export default function HomePage() {
           </p>
           <div className="cse-actions">
             <Link className="cse-button cse-button-primary" href="#port-finder">Choose your port</Link>
-            <Link className="cse-button cse-button-secondary" href="/ports#all-ports">Browse all ports</Link>
+            <Link className="cse-button cse-button-secondary" href="/ports">Browse all ports</Link>
           </div>
           <ul className="cse-trust-list" aria-label="What to expect">
             <li>{ports.length} major cruise ports</li>
@@ -81,17 +81,22 @@ export default function HomePage() {
 
         <div className="cse-region-shortcuts">
           <div className="cse-region-shortcuts-heading">
-            <strong>Browse all {ports.length} ports by region</strong>
-            <Link href="/ports#all-ports">Open the complete directory →</Link>
+            <strong>Browse {regions.length} cruise regions</strong>
+            <Link href="/ports">Open the regional directory →</Link>
           </div>
           <div>
-            {regions.map((region) => (
-              <Link href={`/ports#${regionId(region)}`} key={region}>
-                <span>{ports.filter((port) => port.region === region).length} ports</span>
-                <strong>{region}</strong>
-                <b aria-hidden="true">→</b>
-              </Link>
-            ))}
+            {regions.map((region) => {
+              const regionSlug = getRegionSlug(region);
+              if (!regionSlug) return null;
+
+              return (
+                <Link href={`/ports/regions/${regionSlug}`} key={region}>
+                  <span>{ports.filter((port) => port.region === region).length} ports</span>
+                  <strong>{region}</strong>
+                  <b aria-hidden="true">→</b>
+                </Link>
+              );
+            })}
           </div>
         </div>
       </section>
