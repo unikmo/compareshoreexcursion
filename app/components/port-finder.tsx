@@ -73,7 +73,7 @@ export function PortFinder({ ports }: PortFinderProps) {
         ) : normalizedQuery ? (
           <div className="cse-port-search-empty">
             <strong>No matching port yet.</strong>
-            <Link href="/ports">Browse the complete directory →</Link>
+            <Link href="/ports">Browse by cruise region →</Link>
           </div>
         ) : (
           <p className="cse-port-search-prompt">Start typing to go directly to the right port guide.</p>
