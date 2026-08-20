@@ -1,74 +1,90 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { PortFinder } from "../components/port-finder";
 import { SiteFooter, SiteHeader } from "../components/site-shell";
-import { ports, regions } from "./port-data";
-import { getPortImage } from "./port-images";
+import { ports } from "./port-data";
+import { regionGuides } from "./region-data";
 
 export const metadata: Metadata = {
   title: "Cruise Ports: Curated Independent Shore Excursions",
   description:
-    "Browse 60 major cruise ports across the Caribbean, Mediterranean, Alaska, Europe, Asia-Pacific, Africa, the Middle East and South America.",
+    "Choose a cruise region, then find six carefully selected independent shore-excursion ideas for your port.",
   alternates: { canonical: "/ports" },
 };
 
-const regionId = (region: string) => region.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
-
 export default function PortsPage() {
+  const searchablePorts = ports.map((port) => ({
+    slug: port.slug,
+    name: port.name,
+    country: port.country,
+    region: port.region,
+    topPick: port.topActivities[0].title,
+  }));
+
   return (
     <main className="cse-page">
       <SiteHeader />
 
-      <section className="cse-directory-hero" id="all-ports">
-        <p className="cse-eyebrow">60 curated cruise ports</p>
-        <h1>Choose your port. See the six experiences that fit it.</h1>
-        <p>
-          Every guide leads with three strong independent activities. Three less-obvious alternatives stay secondary, so the page remains useful without becoming another endless marketplace.
-        </p>
+      <section className="cse-ports-gateway-hero">
+        <div className="cse-ports-gateway-copy">
+          <p className="cse-eyebrow">60 ports · 8 cruise regions</p>
+          <h1>Find your port without searching an endless directory.</h1>
+          <p>Choose the region, open the port, and start with the three experiences most worth considering.</p>
+          <a className="cse-button cse-button-primary" href="#cruise-regions">Choose a region</a>
+        </div>
+
+        <div className="cse-ports-gateway-visual" aria-label="Cruise regions featured in the directory">
+          {regionGuides.slice(0, 3).map((region, index) => (
+            <Link className={`cse-gateway-image cse-gateway-image-${index + 1}`} href={`/ports/regions/${region.slug}`} key={region.slug}>
+              <img src={region.image.src} alt={region.image.alt} width="1000" height="760" fetchPriority={index === 0 ? "high" : undefined} />
+              <span>{region.name}</span>
+            </Link>
+          ))}
+        </div>
       </section>
 
-      <nav className="cse-region-nav" aria-label="Jump to a cruise region">
-        {regions.map((region) => <a href={`#${regionId(region)}`} key={region}>{region}</a>)}
-      </nav>
+      <section className="cse-ports-region-section" id="cruise-regions">
+        <div className="cse-ports-region-heading">
+          <div>
+            <p className="cse-eyebrow">Browse by cruise region</p>
+            <h2>Start broad. Decide quickly.</h2>
+          </div>
+          <p>No wall of 60 nearly identical cards. Each regional page contains only the ports relevant to that itinerary.</p>
+        </div>
 
-      <div className="cse-region-directory">
-        {regions.map((region) => {
-          const regionPorts = ports.filter((item) => item.region === region);
-          return (
-            <section className="cse-region-section" id={regionId(region)} key={region}>
-              <div className="cse-region-heading">
-                <div><p className="cse-eyebrow">Cruise region</p><h2>{region}</h2></div>
-                <span>{regionPorts.length} ports</span>
-              </div>
-              <div className="cse-port-link-grid">
-                {regionPorts.map((port) => {
-                  const image = getPortImage(port);
-                  return (
-                    <Link href={`/ports/${port.slug}`} key={port.slug}>
-                      <div className="cse-port-link-image">
-                        <img
-                          src={image.src}
-                          alt={image.alt}
-                          width="520"
-                          height="320"
-                          loading="lazy"
-                        />
-                      </div>
-                      <span>{port.country}</span>
-                      <strong>{port.name}</strong>
-                      <small>{port.topActivities[0].title}</small>
-                      <b>View guide →</b>
-                    </Link>
-                  );
-                })}
-              </div>
-            </section>
-          );
-        })}
-      </div>
+        <div className="cse-region-card-grid">
+          {regionGuides.map((region) => {
+            const portCount = ports.filter((port) => port.region === region.name).length;
+            return (
+              <Link className="cse-region-card" href={`/ports/regions/${region.slug}`} key={region.slug}>
+                <img src={region.image.src} alt={region.image.alt} width="1000" height="700" loading="lazy" />
+                <div className="cse-region-card-shade" aria-hidden="true" />
+                <div className="cse-region-card-copy">
+                  <span>{portCount} ports</span>
+                  <h2>{region.name}</h2>
+                  <p>{region.eyebrow}</p>
+                  <strong>Explore region <b aria-hidden="true">↗</b></strong>
+                </div>
+              </Link>
+            );
+          })}
+        </div>
+      </section>
+
+      <section className="cse-directory-search">
+        <div className="cse-directory-search-heading">
+          <div>
+            <p className="cse-eyebrow">Know the port already?</p>
+            <h2>Go straight to it.</h2>
+          </div>
+          <p>Search by port, country, region or the kind of experience you want.</p>
+        </div>
+        <PortFinder ports={searchablePorts} />
+      </section>
 
       <aside className="cse-coverage-note">
-        <strong>Why not list every harbour?</strong>
-        <p>We publish a port only when independent inventory exists and six recommendations can be made genuinely specific. Thin or duplicated pages stay out of the index.</p>
+        <strong>Why 60 ports?</strong>
+        <p>We publish only where independent inventory exists and six recommendations can be made genuinely specific.</p>
       </aside>
 
       <SiteFooter />
