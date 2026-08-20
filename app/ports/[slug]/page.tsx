@@ -5,6 +5,7 @@ import { SiteFooter, SiteHeader } from "../../components/site-shell";
 import { viatorAffiliateUrl } from "../../lib/viator";
 import { getPort, getRegionTone, getViatorSearchUrl, ports } from "../port-data";
 import { getActivityImage, getPortImage } from "../port-images";
+import { getRegionSlug } from "../region-data";
 import type { Activity, Port } from "../port-data";
 
 type PortPageProps = { params: Promise<{ slug: string }> };
@@ -60,6 +61,7 @@ export async function generateMetadata({ params }: PortPageProps): Promise<Metad
   if (!port) return {};
 
   const title = getSeoTitle(port);
+  const heroImage = getPortImage(port);
 
   return {
     title,
@@ -70,6 +72,7 @@ export async function generateMetadata({ params }: PortPageProps): Promise<Metad
       description: port.heroLine,
       url: `/ports/${port.slug}`,
       type: "article",
+      images: [{ url: heroImage.src, alt: heroImage.alt }],
     },
   };
 }
@@ -81,6 +84,7 @@ export default async function PortPage({ params }: PortPageProps) {
 
   const allActivities = [...port.topActivities, ...port.nicheActivities];
   const heroImage = getPortImage(port);
+  const regionSlug = getRegionSlug(port.region);
   const itemList = {
     "@context": "https://schema.org",
     "@type": "ItemList",
@@ -101,7 +105,7 @@ export default async function PortPage({ params }: PortPageProps) {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itemList) }} />
 
       <div className="cse-breadcrumbs" aria-label="Breadcrumb">
-        <Link href="/">Home</Link><span>/</span><Link href="/ports">Ports</Link><span>/</span><span>{port.name}</span>
+        <Link href="/">Home</Link><span>/</span><Link href="/ports">Ports</Link><span>/</span>{regionSlug ? <><Link href={`/ports/regions/${regionSlug}`}>{port.region}</Link><span>/</span></> : null}<span>{port.name}</span>
       </div>
 
       <section className={`cse-port-intro cse-region-${getRegionTone(port.region)}`}>
@@ -115,6 +119,7 @@ export default async function PortPage({ params }: PortPageProps) {
         </div>
         <div className="cse-port-intro-media">
           <img src={heroImage.src} alt={heroImage.alt} width="900" height="700" fetchPriority="high" />
+          {heroImage.sourceUrl ? <a className="cse-port-image-credit" href={heroImage.sourceUrl} target="_blank" rel="noreferrer noopener">Image source ↗</a> : null}
           <aside>
             <span>Port-day note</span>
             <p>{port.portNote}</p>
@@ -180,7 +185,7 @@ export default async function PortPage({ params }: PortPageProps) {
       </section>
 
       <div className="cse-next-port">
-        <Link href="/ports">← Choose another cruise port</Link>
+        <Link href={regionSlug ? `/ports/regions/${regionSlug}` : "/ports"}>← Choose another cruise port</Link>
       </div>
 
       <SiteFooter />
