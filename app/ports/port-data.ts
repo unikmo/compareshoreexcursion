@@ -457,9 +457,9 @@ export const ports: Port[] = [
     ],
   ),
 
-  // Alaska & Pacific Americas
+  // Alaska & Pacific Coast
   port(
-    "juneau", "Juneau", "Juneau Alaska", "Alaska & Pacific Americas", "United States",
+    "juneau", "Juneau", "Juneau Alaska", "Alaska & Pacific Coast", "United States",
     "Juneau's best independent days connect glacier, wildlife or wilderness without wasting the call in transit.",
     "There are several downtown berths and an outlying dock. Confirm pickup and keep weather-related alternatives in mind.",
     [
@@ -474,7 +474,7 @@ export const ports: Port[] = [
     ],
   ),
   port(
-    "ketchikan", "Ketchikan", "Ketchikan Alaska", "Alaska & Pacific Americas", "United States",
+    "ketchikan", "Ketchikan", "Ketchikan Alaska", "Alaska & Pacific Coast", "United States",
     "Ketchikan is about rainforest, Native culture and waterways—not a generic Alaska coach loop.",
     "Ward Cove is well outside downtown, while other berths are central. Your ship's dock materially changes the day.",
     [
@@ -489,7 +489,7 @@ export const ports: Port[] = [
     ],
   ),
   port(
-    "skagway", "Skagway", "Skagway Alaska", "Alaska & Pacific Americas", "United States",
+    "skagway", "Skagway", "Skagway Alaska", "Alaska & Pacific Coast", "United States",
     "Skagway's defining choice is the Klondike route by rail, road, trail or a combination.",
     "Rockslides and berth assignments can affect walking routes from the ship; follow current port and operator instructions.",
     [
@@ -504,7 +504,7 @@ export const ports: Port[] = [
     ],
   ),
   port(
-    "sitka", "Sitka", "Sitka Alaska", "Alaska & Pacific Americas", "United States",
+    "sitka", "Sitka", "Sitka Alaska", "Alaska & Pacific Coast", "United States",
     "Sitka offers Alaska's strongest blend of wildlife, Tlingit culture and Russian history.",
     "Most ships use the terminal outside town with shuttle service; independent tours may collect there or downtown.",
     [
@@ -519,7 +519,7 @@ export const ports: Port[] = [
     ],
   ),
   port(
-    "icy-strait-point", "Icy Strait Point", "Icy Strait Point Hoonah Alaska", "Alaska & Pacific Americas", "United States",
+    "icy-strait-point", "Icy Strait Point", "Icy Strait Point Hoonah Alaska", "Alaska & Pacific Coast", "United States",
     "Icy Strait Point is one of Alaska's best calls for whales, bears and small-community access.",
     "Tours may start at the cruise development or in nearby Hoonah. Confirm walking, shuttle and meeting instructions.",
     [
@@ -534,7 +534,7 @@ export const ports: Port[] = [
     ],
   ),
   port(
-    "cabo-san-lucas", "Cabo San Lucas", "Cabo San Lucas Mexico", "Alaska & Pacific Americas", "Mexico",
+    "cabo-san-lucas", "Cabo San Lucas", "Cabo San Lucas Mexico", "Alaska & Pacific Coast", "Mexico",
     "Cabo's natural icons sit at the meeting of desert, Pacific swell and the Sea of Cortez.",
     "Cabo is normally a tender port. Factor tender queues into any boat or overland departure.",
     [
@@ -549,7 +549,7 @@ export const ports: Port[] = [
     ],
   ),
   port(
-    "puerto-vallarta", "Puerto Vallarta", "Puerto Vallarta Mexico", "Alaska & Pacific Americas", "Mexico",
+    "puerto-vallarta", "Puerto Vallarta", "Puerto Vallarta Mexico", "Alaska & Pacific Coast", "Mexico",
     "Puerto Vallarta lets you choose between jungle, old-town food and Banderas Bay wildlife.",
     "The cruise terminal is north of the historic centre. Account for city traffic when arranging independent pickup.",
     [
@@ -564,7 +564,7 @@ export const ports: Port[] = [
     ],
   ),
   port(
-    "cartagena-colombia", "Cartagena", "Cartagena Colombia", "Alaska & Pacific Americas", "Colombia",
+    "cartagena-colombia", "Cartagena", "Cartagena Colombia", "Caribbean & Bahamas", "Colombia",
     "Cartagena is best understood through its walls, Afro-Caribbean heritage and extraordinary food.",
     "The cruise terminal is not in the old city. Use arranged transport and keep midday heat in the plan.",
     [
@@ -823,9 +823,9 @@ export const ports: Port[] = [
     ],
   ),
 
-  // Africa, Middle East & South America
+  // Middle East, Africa & Indian Ocean, and South America
   port(
-    "dubai", "Dubai", "Dubai UAE", "Africa, Middle East & South America", "United Arab Emirates",
+    "dubai", "Dubai", "Dubai UAE", "Middle East", "United Arab Emirates",
     "Dubai works best when one modern icon is balanced with desert, old-city or food culture.",
     "Cruise ships use terminals across Port Rashid and Dubai Harbour. Verify the terminal before arranging transport.",
     [
@@ -840,7 +840,7 @@ export const ports: Port[] = [
     ],
   ),
   port(
-    "abu-dhabi", "Abu Dhabi", "Abu Dhabi UAE", "Africa, Middle East & South America", "United Arab Emirates",
+    "abu-dhabi", "Abu Dhabi", "Abu Dhabi UAE", "Middle East", "United Arab Emirates",
     "Abu Dhabi's strongest day combines one landmark of scale with culture or the natural coastline.",
     "Cruise terminals are on Zayed Port; city attractions are spread out, so private transport adds real value.",
     [
@@ -855,7 +855,7 @@ export const ports: Port[] = [
     ],
   ),
   port(
-    "muscat", "Muscat", "Muscat Oman", "Africa, Middle East & South America", "Oman",
+    "muscat", "Muscat", "Muscat Oman", "Middle East", "Oman",
     "Muscat's appeal lies in its restrained cityscape, mountains and clear Gulf of Oman water.",
     "The port sits at Mutrah, but many natural attractions require a longer drive. Match the route to the port-call length.",
     [
@@ -870,7 +870,7 @@ export const ports: Port[] = [
     ],
   ),
   port(
-    "cape-town", "Cape Town", "Cape Town South Africa", "Africa, Middle East & South America", "South Africa",
+    "cape-town", "Cape Town", "Cape Town South Africa", "Africa & Indian Ocean", "South Africa",
     "Cape Town forces a good choice between mountain, peninsula, wine country and the city's own history.",
     "The cruise terminal is close to the V&A Waterfront, but peninsula and wine routes need a full-day plan.",
     [
@@ -885,7 +885,7 @@ export const ports: Port[] = [
     ],
   ),
   port(
-    "port-louis", "Port Louis", "Mauritius Port Louis", "Africa, Middle East & South America", "Mauritius",
+    "port-louis", "Port Louis", "Mauritius Port Louis", "Africa & Indian Ocean", "Mauritius",
     "Mauritius offers volcanic scenery, lagoons and layered food culture within one island call.",
     "Port Louis traffic can be slow. Keep long cross-island routes disciplined and confirm terminal pickup.",
     [
@@ -900,7 +900,7 @@ export const ports: Port[] = [
     ],
   ),
   port(
-    "buenos-aires", "Buenos Aires", "Buenos Aires Argentina", "Africa, Middle East & South America", "Argentina",
+    "buenos-aires", "Buenos Aires", "Buenos Aires Argentina", "South America", "Argentina",
     "Buenos Aires is best approached through neighbourhood character, food and live cultural tradition.",
     "Cruise transfers can be affected by terminal operations and city traffic; confirm the meeting point and return plan.",
     [
@@ -915,7 +915,7 @@ export const ports: Port[] = [
     ],
   ),
   port(
-    "rio-de-janeiro", "Rio de Janeiro", "Rio de Janeiro Brazil", "Africa, Middle East & South America", "Brazil",
+    "rio-de-janeiro", "Rio de Janeiro", "Rio de Janeiro Brazil", "South America", "Brazil",
     "Rio's scale demands a clear route: mountain icons, neighbourhood culture or coast—not every landmark.",
     "The cruise terminal is central, but traffic and attraction queues can be unpredictable. Timed access matters.",
     [
@@ -930,7 +930,7 @@ export const ports: Port[] = [
     ],
   ),
   port(
-    "ushuaia", "Ushuaia", "Ushuaia Argentina", "Africa, Middle East & South America", "Argentina",
+    "ushuaia", "Ushuaia", "Ushuaia Argentina", "South America", "Argentina",
     "At the end of the world, choose between the Beagle Channel, Tierra del Fuego or one serious outdoor route.",
     "Weather changes quickly and many ships have expedition schedules. Confirm return time directly with the operator.",
     [
