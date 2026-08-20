@@ -12,6 +12,24 @@ export const metadata: Metadata = {
   alternates: { canonical: "/ports" },
 };
 
+const gatewayFeatures = [
+  {
+    region: regionGuides[0],
+    src: "https://images.unsplash.com/photo-1540202404-a2f29016b523?auto=format&fit=crop&w=1400&q=86",
+    alt: "A palm-lined Caribbean island coastline",
+  },
+  {
+    region: regionGuides[1],
+    src: "https://images.unsplash.com/photo-1552832230-c0197dd311b5?auto=format&fit=crop&w=1400&q=86",
+    alt: "Historic architecture in the Mediterranean",
+  },
+  {
+    region: regionGuides[2],
+    src: "https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1400&q=86",
+    alt: "A rugged mountain landscape in the north",
+  },
+] as const;
+
 export default function PortsPage() {
   const searchablePorts = ports.map((port) => ({
     slug: port.slug,
@@ -34,9 +52,9 @@ export default function PortsPage() {
         </div>
 
         <div className="cse-ports-gateway-visual" aria-label="Cruise regions featured in the directory">
-          {regionGuides.slice(0, 3).map((region, index) => (
+          {gatewayFeatures.map(({ region, src, alt }, index) => (
             <Link className={`cse-gateway-image cse-gateway-image-${index + 1}`} href={`/ports/regions/${region.slug}`} key={region.slug}>
-              <img src={region.image.src} alt={region.image.alt} width="1000" height="760" fetchPriority={index === 0 ? "high" : undefined} />
+              <img src={src} alt={alt} width="1000" height="760" fetchPriority={index === 0 ? "high" : undefined} />
               <span>{region.name}</span>
             </Link>
           ))}
